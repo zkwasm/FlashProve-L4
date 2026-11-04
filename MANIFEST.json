@@ -11,7 +11,7 @@
     "cpu/l4_blas_test.cu": "7f6e6bc642ee1c5527cbfa582b4a4ce11e2ad284f314d94002b435997952baaf",
     "cpu/l4_histogram_test.cu": "f5c1b90be9686265cd2843786d0b51696ec1880fde5949e45eed986e6009e780",
     "cpu/l4_zero_norm_test.cu": "29a2de1adede4238192c66b1a0f78e2cd9676a2d204a3e59404776be8edd195c",
-    "docs/OVERVIEW.md": "fa99b6a524d851b97741ff026058d63c624806e53d5c9393a15e8af1b6297762",
+    "docs/OVERVIEW.md": "1b1fadcf1a6ee1c5ce9b3f61b25e67c1956dec413a4dd50a2200384c708f32f0",
     "docs/REPRODUCE.md": "444b19a1d9e74250f4dc43dc5bfe918b32220f97fb47f720a6aaf6b5ea836338",
     "docs/SOURCE-CHANGES.json": "793bc3d9eacb475f6c24792bb296234631237691b3286671229ae112ae993931",
     "docs/UPSTREAM.json": "ec69b9f3528b2dbb979e83b1bafcaafad25e3e92f479f132b871408155c9b198",
