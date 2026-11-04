@@ -1,0 +1,122 @@
+{
+  "scope": "One TinyStories260K run; no 0.7B model was tested. Pool peaks are not total GPU peak memory.",
+  "evidence": {
+    "commitmentLog": "runs/real-l4-v8/commit.log",
+    "hardware": "runs/real-l4-v8/hardware.txt",
+    "verification": "runs/real-l4-v8/verification/results.json"
+  },
+  "hardwareRecord": "name, memory.total [MiB], driver_version\nNVIDIA L4, 23034 MiB, 580.178.04",
+  "workload": {
+    "tokens": 256,
+    "r": 255,
+    "e": 256,
+    "batch": 1,
+    "leaves": 1,
+    "convertedShape": {
+      "d": 256,
+      "dh": 32,
+      "layers": 6,
+      "denseFFN": 512,
+      "sharedFFN": 256,
+      "routedExperts": 2,
+      "vocab": 512
+    },
+    "convertedTensorElements": 4395776,
+    "committedTensors": 56
+  },
+  "files": {
+    "checkpoint": {
+      "path": "models/stories260K/stories260K.bin",
+      "bytes": 1056540
+    },
+    "convertedGGUF": {
+      "path": "models/stories260K/flashprove32/model.gguf",
+      "bytes": 15228544
+    },
+    "publicKey": {
+      "path": "runs/real-l4-v8/ivk/key.bin",
+      "bytes": 1601016
+    },
+    "publicLeaf": {
+      "path": "runs/real-l4-v8/ivk/leaf/0.bin",
+      "bytes": 388720
+    },
+    "request": {
+      "path": "runs/real-l4-v8/in/example.req",
+      "bytes": 1032
+    },
+    "output": {
+      "path": "runs/real-l4-v8/out/example.y",
+      "bytes": 4
+    },
+    "proof": {
+      "path": "runs/real-l4-v8/out/example.proof",
+      "bytes": 5600372
+    }
+  },
+  "memory": {
+    "keyEnginePoolHighWaterBytes": 603979776,
+    "leafEnginePoolHighWaterBytes": 268435456,
+    "keySlabBytes": 1500951552,
+    "leafSlabBytes": 1926064128,
+    "l4EngineReserveBytes": 8589934592,
+    "totalCommitmentGPUHighWaterBytes": null,
+    "totalInferenceAndProofGPUHighWaterBytes": null,
+    "hostRSSHighWaterBytes": null
+  },
+  "timing": {
+    "commitmentPhases": [
+      {
+        "phase": "weights",
+        "seconds": 0
+      },
+      {
+        "phase": "check",
+        "seconds": 0.1
+      },
+      {
+        "phase": "anchor-table",
+        "seconds": 0.2
+      },
+      {
+        "phase": "key-file",
+        "seconds": 2.7
+      },
+      {
+        "phase": "anchor-judge",
+        "seconds": 1.1
+      },
+      {
+        "phase": "anchor-files",
+        "seconds": 0
+      },
+      {
+        "phase": "leaf-0-table",
+        "seconds": 0.2
+      },
+      {
+        "phase": "leaf-0-entry",
+        "seconds": 0.2
+      },
+      {
+        "phase": "leaf-0-judge",
+        "seconds": 1
+      },
+      {
+        "phase": "leaf-0-files",
+        "seconds": 0
+      }
+    ],
+    "macIndependentVerificationSeconds": 0.9634375,
+    "inferenceAndProofWallSeconds": null,
+    "note": "Single-run observations; commitment phases are rounded, not an end-to-end benchmark."
+  },
+  "hypothetical700MillionWeights": {
+    "assumption": "Exactly 700,000,000 scalar weights; decimal bytes; payload only, excluding all metadata and proof overhead.",
+    "fp32Bytes": 2800000000,
+    "fp16Bytes": 1400000000,
+    "int8Bytes": 700000000,
+    "int4PackedBytes": 350000000,
+    "validatedHardwareRequirement": null
+  }
+}

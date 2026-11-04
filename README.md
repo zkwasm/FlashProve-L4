@@ -154,6 +154,10 @@ Full proof generation currently needs **L4**. A full CPU prover has not been com
 earlier `cpu/commit.cpp` prototype and its scripts are experimental CPU commitment work, not the
 real-model proof generator used for this result.
 
+For measured artifact sizes, memory-pool records, compatibility constraints and the work needed
+to assess a 0.7B model, see [Resource measurements and planning](docs/RESOURCE-ASSESSMENT.md).
+No 0.7B hardware requirement has been validated by this project.
+
 ## Evidence and files
 
 | Path | Contents |
