@@ -1,0 +1,13 @@
+{
+  "testedSourceCommit": "64dd5ae",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "node": "v22.18.0",
+  "verificationCommand": "node scripts/verify-published.mts",
+  "verificationExit": 0,
+  "rebuiltGGUFByteIdentical": true,
+  "rebuiltTensorSumsByteIdentical": true,
+  "cpuIntegerNextToken": 310,
+  "sourceLayout": "clean local Git clone; no copied executables",
+  "scope": "CPU proof verification, five tampering rejections, model regeneration and CPU reference; no new GPU run"
+}

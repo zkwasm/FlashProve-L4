@@ -1,0 +1,47 @@
+PASS: 1279 published file checksums
+Built independent CPU verifier: build/macos/cp_verify; build=c8138323b58e5b35c1e1b379a14028acb19166a601b900ac763593c7a7a7d31e
+{
+  "id": "2cde2d3ad5214393c2adec56f3ee4ba4a97932f15ae92c2077101bc3fd937470",
+  "nextToken": 310,
+  "results": [
+    {
+      "name": "honest",
+      "exit": 0,
+      "last": "YES",
+      "seconds": 1.443125875
+    },
+    {
+      "name": "changed-input",
+      "exit": 1,
+      "last": "NO: proof-refused",
+      "seconds": 0.5809956249999998
+    },
+    {
+      "name": "changed-output",
+      "exit": 1,
+      "last": "NO: reply-differs",
+      "seconds": 0.9706510830000002
+    },
+    {
+      "name": "changed-proof",
+      "exit": 1,
+      "last": "NO: proof-refused",
+      "seconds": 0.8014927910000001
+    },
+    {
+      "name": "changed-commitment-id",
+      "exit": 1,
+      "last": "NO: model-statement",
+      "seconds": 0.39107708299999966
+    },
+    {
+      "name": "changed-key",
+      "exit": 1,
+      "last": "NO: key-refused",
+      "seconds": 0.9795562499999997
+    }
+  ]
+}
+PASS: fresh real-model inference proof and five independent tampering rejections
+Fresh verification logs: runs/recheck-ocnhWN/verification/
+The manifest detects file changes; it does not authenticate the repository publisher.

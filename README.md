@@ -62,6 +62,8 @@ Expected individual outcomes:
 | Changed public key | 1 | `NO: key-refused` |
 
 The original results are in [results.json](runs/real-l4-v8/verification/results.json).
+The repository's clean-checkout publication checks are recorded
+[here](runs/publication-check/results.json), with the fresh [verification log](runs/publication-check/verify.log).
 The manifest detects changed files; it does not authenticate the publisher or establish that
 the included verifier is correct. Review the source and compare it with the pinned upstream revision.
 
