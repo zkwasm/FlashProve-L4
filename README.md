@@ -2,6 +2,8 @@
 
 A reproducible real-model inference proof on one NVIDIA L4, with independent CPU verification.
 
+For a short, nontechnical explanation, read [what we achieved and why it matters](docs/OVERVIEW.md).
+
 This repository adapts [Anthropic FlashProve](https://github.com/anthropics/FlashProve) at commit
 `9e2bdd8ff5bf9c62f18263d7dac189b0400b260c` (version 0.16.0) to a small pretrained
 [TinyStories260K model](models/stories260K/MODEL-DETAILS.md) and a 24 GB-class L4.
