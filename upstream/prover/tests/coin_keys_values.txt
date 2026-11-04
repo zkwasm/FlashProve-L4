@@ -1,0 +1,9 @@
+# Known answers of common/coin_keys.h, written by tests/coin_keys_values.py: made-up inputs; hashlib, and the ChaCha20 block function as specified in RFC 8439, 2.1 to 2.3.
+first_table 542fa235a5d33a32a8987dee2a0607cdb46d65ead8e8a97421203ae5503433e2
+copy_table 4e0e3825d2c60ef42263ba2606845ac58f5efeb55f0634b4648c7a28025f1aa7
+key_file e6adf32c290bd9ab6a4eaa7cd46fb7ca5bcf2f69aa5108bd61223f679eee7a2a
+entry bdd41ca962dba11d0d718b93adaed5b4b4c3bfb7cb9b7e0ac32aa2833953aaa8
+entry_with_answers 166c78667509b067c3e5be016ae37b53e66d526ffe4d64628156bdc54fe0564e
+batch_first d3e5a4408fda6fa67f005d3773c1bc000e8f14389eb70a30f89a184ad138677d
+batch_process 9757de81186811a08387aace9eebeb47aff67bf13f0d84b2e68ffb877d5bf184
+draw 918

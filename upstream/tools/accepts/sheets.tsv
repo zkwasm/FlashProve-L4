@@ -1,0 +1,6 @@
+# tools/accepts/sheets.tsv: which asking files tools/accepts/accepts.sh calls. One call a line:
+# size  part  name  file-below-lean/Ask  parsed-file|-  controls-that-the-file-plays
+small honest   honest          AllCompiledSmall.lean           -     0
+small controls controls-joined AllCompiledSmallControls.lean   -     5
+small controls controls-key    KeyCompiledSmallControls.lean   key   6
+small controls controls-proof  ProofCompiledSmallControls.lean proof 6

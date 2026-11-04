@@ -1,0 +1,101 @@
+{
+  "base": "9e2bdd8ff5bf9c62f18263d7dac189b0400b260c",
+  "verifierSourceFilesChanged": false,
+  "changes": [
+    {
+      "path": "blocks/coins/coins.h",
+      "before": "943b764a04b23b88e1ef458d6bddd983edd45f6a6dc3271bc21647ccd164f710",
+      "after": "a6abbda81749caddaec91f6382379bf8a51b548bfa72e8079e3ede52b8b485fe"
+    },
+    {
+      "path": "prover/build.sh",
+      "before": "757f8f134be8a42f9faf21cc61316397de43b5e4fd161a506d2b512f272c58fa",
+      "after": "4c3a7bb8586524483781ea6a7b3d0e308cacf063c7f2ec126aca1eace1880116"
+    },
+    {
+      "path": "prover/common/blas.h",
+      "before": "b4d2d3c76dcc1ba34a046790127466ec348d99a8a09dc25117a1b36e48656ecd",
+      "after": "174bff2d05132d4cfdae88ffa9d2ff3729e048ed92d009d04534de35eb2b0634"
+    },
+    {
+      "path": "prover/engine/fold.cuh",
+      "before": "f06999c097ab8353a82b19c986d5f6c68c059df4c741852047b9cee0e031cdc7",
+      "after": "1ed47d9e29d7f36fa7ef9c86495aa05ea6ef63f696d9a18e29a148a0ce2c4865"
+    },
+    {
+      "path": "prover/engine/tiled.cuh",
+      "before": "abbcc78bcfb2826831c3417704a0f1cdad63dbc8e7c119f117765b47d60e9d8e",
+      "after": "f83b2377d2396999d3d3b1441fcbccf543499e0a589a266c625cfa9f75072d9e"
+    },
+    {
+      "path": "prover/hash_commitment/hf_commit_once.cuh",
+      "before": "25e462fe5a62ce26e19eccd00d12e49ad48e1058f8e5db0e491639c5eff1916b",
+      "after": "18bf297c5bcc0a30c8580f83aee1fba60b7e2b60897c9861dc9e0e0953acc2c1"
+    },
+    {
+      "path": "prover/hash_commitment/hf_commit_weights.cuh",
+      "before": "8329e3af12c780aca21fd09e3549e8c1f04210a86897e35e9ba1f8067b6fc918",
+      "after": "6d3b90f9efe8465ed2c86019943d14d422caa6c6527f6b31e7bbafdea717f317"
+    },
+    {
+      "path": "prover/hash_commitment/hf_range_windows.cuh",
+      "before": "e4ed156f3bcc062801ad171a0b3c41c619d5ccfd7c5e422e2cf8216bdaeee9bf",
+      "after": "d36954bdd28ca2c58e5ca05bdfa8e95608a50913b2aa3b7d45aecba2f092a094"
+    },
+    {
+      "path": "prover/hiding/count_keys16.cuh",
+      "before": "27f9060ef3ed5bc7707fd0ea678725513e154e496f7c4a843e0bf1d77c50c9a1",
+      "after": "7e9e1127498f7dff707bc54e93df5344e6f973ba54fca4efe7b6698d65199380"
+    },
+    {
+      "path": "prover/hiding/forest.cuh",
+      "before": "67b961f2aebb3311d3a6a0cef3908738a7e163bf3349d6c3a7a9c7e4d12560f7",
+      "after": "5bc58359238cec45437407329e862025723ac3b1e6069c0c0f8cb1c95b55d393"
+    },
+    {
+      "path": "prover/hiding/forest_keys.cuh",
+      "before": "ec5f73ac2d60cbb215c2389a41cf8c699f4687f75b8d41d8a88d247219c5b167",
+      "after": "431121e45398084fc1d208cd7e6c389d0b7516364f3422ccdd4d7c49e7998662"
+    },
+    {
+      "path": "prover/hiding/forest_table.cuh",
+      "before": "9d5f57bfbdd8a950b86dcd767f6f3d85bde6fffa48850202b721abc5f247b35e",
+      "after": "016277e3f0ba9c7cc31978711ef9ccb02730523d872aec1c35d0225b73b1515d"
+    },
+    {
+      "path": "prover/prover/base.cuh",
+      "before": "29bbf725ef2c4476b4d84a72bdd81a1a15888df51794f3d5bc308181867a4928",
+      "after": "33089023db208c3b093aa7a2f338543c7085f138cae41f203b5007b7f1ea250f"
+    },
+    {
+      "path": "prover/weights_blocks/experts.cuh",
+      "before": "aa9c6b1e78805f15411fadcc15e626eb1ce8ff55c2ace83e1648be777ed4a8f2",
+      "after": "73ed51eef3e613ec4383ade37012bb8ea0c0eede99895a1f9c69a2e86cc3b135"
+    },
+    {
+      "path": "prover/weights_blocks/gguf_source.cuh",
+      "before": "e0626bc01f903fb618f9de704708a1910e342cb1442ac4b6d143409806037c2d",
+      "after": "073bcc709856bf191fa4de05a16365f65954db33f02672ff83d7b1e0ad1bd591"
+    },
+    {
+      "path": "prover/weights_commitment/fold_source.cuh",
+      "before": "69f49acf7aae4cc48d66b2e82958ff051238057dde8ea5364a88f1f58c71c29c",
+      "after": "544b9f91f59b7022a5d4b7d42af319413d894a04a61cd2ae60fe2fa880b236a8"
+    },
+    {
+      "path": "prover/weights_commitment/fold_weights.cuh",
+      "before": "95f388ac11c5a94202fa405d535d990ac6112bfc3c69baff8e0b6d6848b21210",
+      "after": "06838921c386a51c514acd9cb4bafcf06763c0d9b62cd2b11ea39dd9f78937fb"
+    },
+    {
+      "path": "prover/weights_commitment/worst_case.cuh",
+      "before": "264c87d04f60cd4d11604ae35c9e70b9804fb9a557b7fa0bf6d10eb2275b27d5",
+      "after": "6914fd6b2f30c5eb193c0c694f7f5735a9b2a2a4cde7c4c72cc5abcafe13dbfa"
+    },
+    {
+      "path": "weight_sums/weight_sums.cpp",
+      "before": "deedddd7c910a48f38b198f5041a39ddfba242fca42067a0fbe702b20d4074b3",
+      "after": "52661b1899c748fb4f880ac8932e4ad40c35df62eb6cc80dc71f37ef7d493c49"
+    }
+  ]
+}

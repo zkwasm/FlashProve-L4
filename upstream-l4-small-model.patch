@@ -1,0 +1,539 @@
+diff --git a/blocks/coins/coins.h b/blocks/coins/coins.h
+index 5a83b57..c283b55 100644
+--- a/blocks/coins/coins.h
++++ b/blocks/coins/coins.h
+@@ -75,7 +75,7 @@ inline CoinKey coin_key_from_bytes(const u8 b[32]) { // a key's 32 bytes are its
+ constexpr u32 COIN_SEED_WORD = 0x44535043; // "CPSD"
+ inline CoinKey seed_child(const CoinKey &seed, u32 kind, u32 number) { return coin_key(seed, COIN_SEED_WORD, kind, number, 0); }
+ 
+-// 32 fresh bytes from getrandom(); a call that fails with EINTR (a signal interrupted it) is
++// 32 fresh bytes from getrandom() (getentropy() on macOS); a call that fails with EINTR is
+ // repeated. If the call fails otherwise, gives fewer bytes or gives only zeros, as a dead source
+ // does, the process ends: no value is derived from such bytes.
+ // Source: a function with getrandom()'s arguments, so that a test can substitute a faulty one.
+@@ -92,7 +92,11 @@ template <class Source> inline void fresh32(u8 out[32], Source source) {
+   BLK_REQUIRE(false, "coins: the system's random generator (getrandom) failed or gave fewer than 32 bytes");
+ }
+ inline void fresh32(u8 out[32]) {
++#ifdef __APPLE__
++  fresh32(out, [](void *p, size_t n, unsigned) -> ssize_t { return ::getentropy(p, n) == 0 ? static_cast<ssize_t>(n) : -1; });
++#else
+   fresh32(out, [](void *p, size_t n, unsigned flags) { return ::getrandom(p, n, flags); });
++#endif
+ }
+ 
+ // The process key of one run: X = child, then X = key(X; four words) over the eight words of
+diff --git a/prover/build.sh b/prover/build.sh
+index fa5d3c5..2f34b15 100755
+--- a/prover/build.sh
++++ b/prover/build.sh
+@@ -59,6 +59,7 @@
+ #   CUDA_VISIBLE_DEVICES
+ #              set to the empty string, it keeps the build off the GPU: compiler_sample then finds
+ #              no GPU, and a message says that only the compiler's version was checked
++#   FLASHPROVE_CUDA_ARCH  sm_89 for L4, or sm_90a (the default)
+ # EIDB and ETAU are explained in prover/common/setting.h. A serving target rejects them, and its
+ # compilers see only PATH of the caller's environment.
+ #
+@@ -614,7 +615,14 @@ tools() {
+   file_of device-compiler "$middle/cicc" || return 1
+   file_of device-assembler "$(PATH=$looks command -v ptxas)"
+ }
+-nvcc_base=(nvcc -O3 -std=c++17 -arch=sm_90a --extended-lambda --default-stream per-thread -I. -Xcompiler -fno-ipa-modref -DCCCL_DISABLE_NVTX -DDIGEST_WORDS=$dw)
++# L4 uses Ada (sm_89); keep the original target unless explicitly selected.
++gpu_arch=${FLASHPROVE_CUDA_ARCH:-sm_90a}
++case "$gpu_arch" in sm_89|sm_90a) ;; *) echo "build.sh: unsupported FLASHPROVE_CUDA_ARCH" >&2; exit 2 ;; esac
++nvcc_base=(nvcc -O3 -std=c++17 -arch="$gpu_arch" --extended-lambda --default-stream per-thread -I. -Xcompiler -fno-ipa-modref -DCCCL_DISABLE_NVTX -DDIGEST_WORDS=$dw)
++if [[ $gpu_arch == sm_89 ]]; then
++  # Two serving units compile side by side on the eight-core L4 development VM.
++  nvcc_base+=(-DFLASHPROVE_L4=1 --split-compile=4 -Xptxas --split-compile=4)
++fi
+ # -fno-ipa-modref, for the host compiler here and in the g++ lines below, works around a bug in g++
+ # 13.3.0, which can silently delete the stores that fill an object passed by reference
+ # (verifier/tests/compiler_pass_control.sh reproduces it). cuBLASLt is for
+@@ -631,6 +639,7 @@ form=()
+ if [ -n "${EIDB:-}" ]; then form+=("-DEIDB=$EIDB"); fi
+ if [ -n "${ETAU:-}" ]; then form+=("-DETAU=$ETAU"); fi
+ sha=(-Xcompiler "-msha,-msse4.1,-mssse3")
++if [[ $gpu_arch == sm_89 ]]; then sha=(); fi # G2's Cascade Lake CPU uses Sha256's portable C++ path.
+ # keeper_unit <directory> [<flags>]: compiles the table holder (`keeper` in identifiers), the one
+ # translation unit of cp_prove that reads the weight table's internals
+ # (prover/hash_commitment/hf_keeper_unit.h), into <directory>/hf_keeper.o, hf_keeper_2.o and
+diff --git a/prover/common/blas.h b/prover/common/blas.h
+index e78d68d..a3277a7 100644
+--- a/prover/common/blas.h
++++ b/prover/common/blas.h
+@@ -23,6 +23,19 @@
+ #include <mutex>
+ #include <vector>
+ namespace blas {
++#ifdef FLASHPROVE_L4
++// cuBLAS can refuse valid TN int8 shapes on L4. Preserve the same exact product
++// with a plain kernel for those shapes; callers' existing 32-bit bounds apply.
++static __global__ void gemm_tn_plain(int m, int n, int k, const int8_t *A, size_t lda,
++                                   const int8_t *B, size_t ldb, int *C, size_t ldc, int beta, int times) {
++  const int i = blockIdx.x * blockDim.x + threadIdx.x;
++  const int j = blockIdx.y * blockDim.y + threadIdx.y;
++  if (i >= m || j >= n) return;
++  int sum = 0;
++  for (int q = 0; q < k; ++q) sum += (int)A[(size_t)i * lda + q] * B[(size_t)j * ldb + q];
++  C[(size_t)j * ldc + i] = times * sum + (beta ? C[(size_t)j * ldc + i] : 0);
++}
++#endif
+ // Default size of a workspace (GPU scratch memory for cuBLAS): 32 MiB, which cuBLAS's
+ // documentation recommends on the Hopper architecture.
+ constexpr size_t BLAS_WORKSPACE = (size_t)32 << 20;
+@@ -126,6 +139,18 @@ static inline void gemm_tn(cublasHandle_t handle, int m, int n, int k, const int
+   const cublasStatus_t status =
+       cublasGemmEx(handle, CUBLAS_OP_T, CUBLAS_OP_N, m, n, k, &times, A, CUDA_R_8I, (int)lda, B, CUDA_R_8I, (int)ldb,
+                    &beta, C, CUDA_R_32I, (int)ldc, CUBLAS_COMPUTE_32I, CUBLAS_GEMM_DEFAULT);
++#ifdef FLASHPROVE_L4
++  if (status == CUBLAS_STATUS_NOT_SUPPORTED) {
++    cudaStream_t stream;
++    if (cublasGetStream(handle, &stream) != CUBLAS_STATUS_SUCCESS) std::exit(1);
++    gemm_tn_plain<<<dim3((m + 15) / 16, (n + 15) / 16), dim3(16, 16), 0, stream>>>(m, n, k, A, lda, B, ldb, C, ldc, beta, times);
++    if (cudaGetLastError() != cudaSuccess) {
++      std::printf("GPU error: the L4 exact int8 product launch failed; the program stops\n");
++      std::exit(1);
++    }
++    return;
++  }
++#endif
+   if (status != CUBLAS_STATUS_SUCCESS) {
+     // n is not printed: in the routed experts' product (grouped_blocks() in
+     // prover/weights_blocks/experts.cuh) it depends on the number of tokens routed to an expert,
+diff --git a/prover/engine/fold.cuh b/prover/engine/fold.cuh
+index 2e33754..e9dad4d 100644
+--- a/prover/engine/fold.cuh
++++ b/prover/engine/fold.cuh
+@@ -1396,9 +1396,21 @@ private:
+     // A pitch of 4 words past a multiple of 32: eight rows' words meet no shared-memory bank twice.
+     const u32 n = (u32)narrow_.size(), padded = (n + 7) / 8 * 8, pitch = (4 * padded + 127) / 128 * 128 + 16;
+     const size_t room = fold_bytes_room(pitch, padded);
+-    if (room > (size_t)100 << 10) return false; // (two blocks on a multiprocessor)
++    const size_t shared_limit =
++#ifdef FLASHPROVE_L4
++        96 << 10;
++#else
++        100 << 10;
++#endif
++    if (room > shared_limit) return false;
+     static const bool set = [] {
+-      ENGINE_CK_ATTRIBUTE(k_fold_combine_bytes, cudaFuncAttributeMaxDynamicSharedMemorySize, 100 << 10);
++      ENGINE_CK_ATTRIBUTE(k_fold_combine_bytes, cudaFuncAttributeMaxDynamicSharedMemorySize,
++#ifdef FLASHPROVE_L4
++                          96 << 10
++#else
++                          100 << 10
++#endif
++      );
+       return true;
+     }();
+     (void)set;
+diff --git a/prover/engine/tiled.cuh b/prover/engine/tiled.cuh
+index 0505fec..4f18234 100644
+--- a/prover/engine/tiled.cuh
++++ b/prover/engine/tiled.cuh
+@@ -95,7 +95,11 @@ constexpr unsigned TILED_THREADS = 256;
+ constexpr unsigned TILED_M = 128, TILED_N = 128; // a block's planes, and its rows of columns' bytes
+ constexpr unsigned TILED_COLUMNS = TILED_N / 8;
+ constexpr unsigned TILED_STEP = 128;              // places copied to shared memory in one step
++#ifdef FLASHPROVE_L4
++constexpr unsigned TILED_STAGES = 2; // 72 KiB rather than 108 KiB; same products, fewer prefetched stages.
++#else
+ constexpr unsigned TILED_STAGES = 3;
++#endif
+ constexpr unsigned TILED_PARTS = TILED_STEP / 16; // 16-byte pieces of one row in a step
+ constexpr unsigned TILED_PITCH = TILED_STEP + 16; // bytes from one row of a tile to the next
+ constexpr unsigned TILED_STAGE_BYTES = (TILED_M + TILED_N) * TILED_PITCH;
+diff --git a/prover/hash_commitment/hf_commit_once.cuh b/prover/hash_commitment/hf_commit_once.cuh
+index d781f88..ddfb072 100644
+--- a/prover/hash_commitment/hf_commit_once.cuh
++++ b/prover/hash_commitment/hf_commit_once.cuh
+@@ -305,7 +305,11 @@ struct HfOncePool {
+ // recomputed in a pass to leave it. No formula gives what the engine needs, and much less than
+ // this can be too little. The run's last line
+ // prints the peak of the engine's pool. No byte of an output file depends on this number.
++#ifdef FLASHPROVE_L4
++constexpr size_t HF_ONCE_ENGINE_ROOM = (size_t)8 << 30;
++#else
+ constexpr size_t HF_ONCE_ENGINE_ROOM = (size_t)24 << 30;
++#endif
+ // Added to the slab's computed size: while the slab exists, other code's small buffers come out of
+ // it too, since cudaMalloc is lent_memory.h's macro in the whole translation unit.
+ constexpr size_t HF_ONCE_SLAB_SPARE = (size_t)1 << 30;
+diff --git a/prover/hash_commitment/hf_commit_weights.cuh b/prover/hash_commitment/hf_commit_weights.cuh
+index 18a3174..c2f1c1f 100644
+--- a/prover/hash_commitment/hf_commit_weights.cuh
++++ b/prover/hash_commitment/hf_commit_weights.cuh
+@@ -280,7 +280,7 @@ struct PinnedWeights : WeightWalker {
+                       "takes at most 24; nothing is written\n", t.name.c_str(), t.e);
+       exit(2);
+     }
+-    const ::fold::Reads rd = ::fold::reads(kind);
++    const ::fold::Reads rd = ::fold::reads(kind, source.file.embedding_length, source.file.key_length);
+     if (!rd.norm[0]) return;
+     const ::gguf::Tensor &norm = source.file.at(blk + rd.norm + ".weight");
+     if (norm.type != ::gguf::F32 || norm.cells() != g.dims[0]) {
+diff --git a/prover/hash_commitment/hf_range_windows.cuh b/prover/hash_commitment/hf_range_windows.cuh
+index bb02436..5e1c61b 100644
+--- a/prover/hash_commitment/hf_range_windows.cuh
++++ b/prover/hash_commitment/hf_range_windows.cuh
+@@ -698,7 +698,11 @@ struct RangeWindows {
+   size_t jobs() const { return jobs_.size(); }
+ 
+ private:
++#ifdef FLASHPROVE_L4
++  static constexpr int COUNT_BITS = 14; // 64 KiB; more passes, unchanged multiplicities.
++#else
+   static constexpr int COUNT_BITS = 15; // the counting kernel's bins: 2^15 words, 128 KiB of shared memory
++#endif
+   static constexpr size_t NO_UNIT = ~(size_t)0, NOT_COVERED = ~(size_t)0 - 1;
+   struct Unit {
+     ::hfw::FoldUnit u;  // index rules; each `step` is for the model file's order
+diff --git a/prover/hiding/count_keys16.cuh b/prover/hiding/count_keys16.cuh
+index b6bf385..e838d81 100644
+--- a/prover/hiding/count_keys16.cuh
++++ b/prover/hiding/count_keys16.cuh
+@@ -15,6 +15,26 @@
+ // kernel. See also, for Sakharnykh's post:
+ // https://developer.nvidia.com/blog/gpu-pro-tip-fast-histograms-using-shared-atomics-maxwell/.
+ #pragma once
++#ifdef FLASHPROVE_L4
++// Small-model path: direct global atomics avoid Hopper's 128 KiB shared histogram.
++// The output layout and every counted low-k-bit key are unchanged.
++__global__ void k_count_keys_l4(const uint4 *keys, size_t nvb, int bpi, int k, u32 *outAll) {
++  const int b = blockIdx.x / bpi, w = blockIdx.x % bpi;
++  const uint4 *kb = keys + (size_t)b * nvb;
++  u32 *out = outAll + ((size_t)b << k);
++  const u32 mask = (1u << k) - 1;
++  for (size_t i = w * (size_t)blockDim.x + threadIdx.x; i < nvb; i += (size_t)bpi * blockDim.x) {
++    const uint4 v = kb[i];
++    const u32 x[4] = {v.x, v.y, v.z, v.w};
++#pragma unroll
++    for (int a = 0; a < 8; a++) atomicAdd(out + ((x[a >> 1] >> (16 * (a & 1))) & mask), 1u);
++  }
++}
++static inline void count_keys_l4(const uint4 *keys, size_t nvb, int bpi, int identities, int k, u32 *out, cudaStream_t stream) {
++  k_count_keys_l4<<<identities * bpi, 256, 0, stream>>>(keys, nvb, bpi, k, out);
++  CK(cudaGetLastError());
++}
++#endif
+ // outAll[(b << 16) + key] += the number of times that key occurs among identity b's keys.
+ // keys: for each identity in turn, nvb uint4 values of eight keys. bpi: thread blocks per identity.
+ // ForestTable::counts() (prover/hiding/forest_table.cuh) uses one identity: all the keys that it is
+@@ -66,6 +86,9 @@ __global__ void k_count_keys16(const uint4 *keys, size_t nvb, int bpi, u32 *outA
+ // Launches k_count_keys16(); exits if the launch is rejected. `out`: the kernel's outAll; zero it
+ // first. The 131072-byte limit is set at the first call only, for the device then current.
+ static inline void count_keys16(const uint4 *keys, size_t nvb, int bpi, int identities, u32 *out, cudaStream_t stream) {
++#ifdef FLASHPROVE_L4
++  count_keys_l4(keys, nvb, bpi, identities, 16, out, stream);
++#else
+   static const bool once = [] {
+     CK_ATTRIBUTE(k_count_keys16, cudaFuncAttributeMaxDynamicSharedMemorySize, 131072);
+     return true;
+@@ -73,4 +96,5 @@ static inline void count_keys16(const uint4 *keys, size_t nvb, int bpi, int iden
+   (void)once;
+   k_count_keys16<<<identities * bpi, 1024, 131072, stream>>>(keys, nvb, bpi, out);
+   CK(cudaGetLastError());
++#endif
+ }
+diff --git a/prover/hiding/forest.cuh b/prover/hiding/forest.cuh
+index b43f223..2ad5cce 100644
+--- a/prover/hiding/forest.cuh
++++ b/prover/hiding/forest.cuh
+@@ -80,8 +80,12 @@ static bool forest_small_tails = false;
+ // value; one benchmark, prover/tests/forest_lookup_bench.cu, flips it to compare the two (no test
+ // that SUITE.md lists runs it).
+ #ifndef FOREST_FUSED
++#ifdef FLASHPROVE_L4
++#define FOREST_FUSED 0 // Use the existing cuBLAS path instead of Hopper's larger shared-memory kernels.
++#else
+ #define FOREST_FUSED 1
+ #endif
++#endif
+ static bool forest_fused = FOREST_FUSED != 0;
+ // Whether the key side leaves out the padding declared to Forest::counts(). A test can set it to
+ // false to compare; no file of this repository does.
+diff --git a/prover/hiding/forest_keys.cuh b/prover/hiding/forest_keys.cuh
+index 417cce4..9f339f6 100644
+--- a/prover/hiding/forest_keys.cuh
++++ b/prover/hiding/forest_keys.cuh
+@@ -281,7 +281,13 @@ template <> struct Form<LimbSrc> : ByValues<Form<LimbSrc>> {
+ // and lookup_tie::k_tie() raises OWN_TEST (no proof). Same for a range table of under 2^16 rows.
+ template <> struct Form<PackedSrc> : ByValues<Form<PackedSrc>> {
+   static constexpr int THREADS = 512;
+-  static __host__ __device__ int shared(const PackedSrc &) { return POWERS_BYTES + 131072; }
++  static __host__ __device__ int shared(const PackedSrc &) {
++#ifdef FLASHPROVE_L4
++    return POWERS_BYTES;
++#else
++    return POWERS_BYTES + 131072;
++#endif
++  }
+   const uint16_t *tab;
+   __device__ __forceinline__ void init(const PackedSrc &s, const T &alpha, void *sh) {
+     set_powers(alpha, sh);
+@@ -289,8 +295,13 @@ template <> struct Form<PackedSrc> : ByValues<Form<PackedSrc>> {
+   }
+   static constexpr int BITS = 44, NB0 = 4;
+   __device__ __forceinline__ void init_values(const PackedSrc &s, void *sh) {
++#ifdef FLASHPROVE_L4
++    tab = s.ctab; // Keep the same read-only table in global memory on L4.
++    __syncthreads(); // Preserve stage()'s barrier after set_powers().
++#else
+     tab = (const uint16_t *)((u8 *)sh + POWERS_BYTES);
+     stage((u8 *)sh + POWERS_BYTES, s.ctab, 131072);
++#endif
+   }
+   __device__ __forceinline__ u64 value(u32 k) const { return (u64)k + ((u64)tab[k] << 28); }
+   __device__ __forceinline__ u64 bytes0(u32 k) const { return k | (u32)tab[k] << 16; }
+diff --git a/prover/hiding/forest_table.cuh b/prover/hiding/forest_table.cuh
+index 8ae09bc..0d73b6e 100644
+--- a/prover/hiding/forest_table.cuh
++++ b/prover/hiding/forest_table.cuh
+@@ -478,7 +478,9 @@ struct ForestTable {
+     PA(et.Gcb, (((nlo << (kT - 5)) >> 14) + 2) * 1024, 2);
+     PA(et.X, 32ull << lmid, 2);
+     et.solo = solo;
++#ifndef FLASHPROVE_L4
+     CK_ATTRIBUTE(h_idk<1>, cudaFuncAttributeMaxDynamicSharedMemorySize, 131072);
++#endif
+   }
+   // prove() needs this many elements of T at `room`, 256-byte aligned. Level l starts at element
+   // nlo (2^l - 1). Nothing there is needed between two calls.
+@@ -494,12 +496,16 @@ struct ForestTable {
+     const uint4 *kk = (const uint4 *)from;
+     u32 *to = cnt + ((size_t)c << kT);
+     CK(cudaMemsetAsync(to, 0, (size_t)4 << kT, g_st));
++#ifdef FLASHPROVE_L4
++    count_keys_l4(kk, words, g_sms, 1, k, to, g_st);
++#else
+     if (k == 16)
+       count_keys16(kk, words, g_sms, 1, to, g_st);
+     else if (k <= 10)
+       h_idk<8><<<g_sms * 2, 512, (size_t)32 << k, g_st>>>(kk, words, g_sms * 2, k, to);
+     else
+       h_idk<1><<<g_sms * 2, 512, (size_t)4 << k, g_st>>>(kk, words, g_sms * 2, k, to);
++#endif
+     CK(cudaGetLastError());
+     if (pub)
+       ft::k_pub_call<<<1, 1, 0, g_st>>>(to + calls[c].t0, pub, pubo + keys.first[c], I);
+diff --git a/prover/prover/base.cuh b/prover/prover/base.cuh
+index 3618df7..5794402 100644
+--- a/prover/prover/base.cuh
++++ b/prover/prover/base.cuh
+@@ -275,7 +275,11 @@ static inline void ws_of(int xl, const long long *xst, int T_, int d, int NI, lo
+   if (xl == 5)
+     k_ws<5, 16><<<dim3((T_ + 31) / 32, NI), dim3(32, 16)>>>(xst, T_, d, Ws);
+   else
++#ifdef FLASHPROVE_L4
++    k_ws<4, 16><<<dim3((T_ + 31) / 32, NI), dim3(32, 16)>>>(xst, T_, d, Ws);
++#else
+     k_ws<4, 32><<<dim3((T_ + 31) / 32, NI), dim3(32, 32)>>>(xst, T_, d, Ws);
++#endif
+ }
+ // o[q] = sum_t e[t] * fn(q, t), masked. o must point into the sub-proof's message array: what is
+ // stored is the sum plus the mask entry of the slot o + q, a random element (sc_door::claim(),
+diff --git a/prover/weights_blocks/experts.cuh b/prover/weights_blocks/experts.cuh
+index d44cb1d..9b0fae0 100644
+--- a/prover/weights_blocks/experts.cuh
++++ b/prover/weights_blocks/experts.cuh
+@@ -48,7 +48,11 @@
+ // alone. Both forms are meant to give the same sums.
+ // Three tests that are not part of this repository compare the sums with a plain kernel's: two
+ // test the selected form, and one tests both forms (it builds only at 1).
++#ifdef FLASHPROVE_L4
++#define EXPERTS_IN_ONE_LAUNCH 0
++#else
+ #define EXPERTS_IN_ONE_LAUNCH 1
++#endif
+ #if EXPERTS_IN_ONE_LAUNCH
+ #include "weights_blocks/experts_in_one_launch.cuh"
+ #endif
+diff --git a/prover/weights_blocks/gguf_source.cuh b/prover/weights_blocks/gguf_source.cuh
+index 7397920..cb43522 100644
+--- a/prover/weights_blocks/gguf_source.cuh
++++ b/prover/weights_blocks/gguf_source.cuh
+@@ -26,8 +26,9 @@ struct GgufSource : BlockSource {
+   // messages; it must not be empty.
+   void open(const std::string &setup_dir, const std::vector<std::string> &shards) {
+     file_.open_folder(setup_dir);
+-    if (file_.embedding_length != 5120 || file_.key_length != 128)
+-      stop("only models of width 5120 and head width 128 are supported", shards[0]);
++    if (!((file_.embedding_length == 5120 && file_.key_length == 128) ||
++          (file_.embedding_length == 256 && file_.key_length == 32)))
++      stop("supported width/head-width pairs are 5120/128 and 256/32", shards[0]);
+     if ((uint64_t)shape.d != file_.embedding_length || (uint64_t)shape.dh != file_.key_length ||
+         (uint64_t)shape.layers != file_.block_count)
+       stop("the model has " + std::to_string(file_.block_count) + " layers of width " +
+@@ -117,7 +118,7 @@ struct GgufSource : BlockSource {
+   // gives the norm and c_word, c_0's binary32 bit pattern. Cached per (norm, c_word).
+   // gamma is defined in docs/model.md, "11.4 From a decoded value to an integer" (there gamma_k).
+   const float *gain(int stream, int layer) override {
+-    const fold::Reads reads = fold::reads(kind(stream, layer));
++    const fold::Reads reads = fold::reads(kind(stream, layer), file_.embedding_length, file_.key_length);
+     if (!reads.norm[0]) return nullptr;
+     const std::string n =
+         (stream == 14 ? std::string() : "blk." + std::to_string(layer) + ".") + reads.norm + ".weight";
+@@ -125,7 +126,7 @@ struct GgufSource : BlockSource {
+     if (gamma) return gamma;
+     const gguf::Tensor &g = file_.at(n);
+     if (g.type != gguf::F32 || g.cells() != file_.embedding_length)
+-      stop("the norm must have 5120 values of type F32", n);
++      stop("the norm must have embedding_length values of type F32", n);
+     // The gains pass through a page-locked staging buffer and are zeroed there: they are weights.
+     CK(cudaEventSynchronize(staged_[0]));
+     file_.read(g, 0, g.bytes(), stage_[0]);
+diff --git a/prover/weights_commitment/fold_source.cuh b/prover/weights_commitment/fold_source.cuh
+index e609e91..51c81b5 100644
+--- a/prover/weights_commitment/fold_source.cuh
++++ b/prover/weights_commitment/fold_source.cuh
+@@ -133,8 +133,9 @@ struct FoldSource {
+   // descriptor (gguf::Model::open_folder(), gguf_file.h). Exits with code 2 if it rejects a file.
+   void open(const std::string &setup) {
+     file.open_folder(setup);
+-    if (file.embedding_length != 5120 || file.key_length != 128) {
+-      fprintf(stderr, "the two constants of the conversion to integers are valid only for d = 5,120 and dh = 128\n");
++    if (!((file.embedding_length == 5120 && file.key_length == 128) ||
++          (file.embedding_length == 256 && file.key_length == 32))) {
++      fprintf(stderr, "supported width/head-width pairs are 5120/128 and 256/32\n");
+       exit(2);
+     }
+     FILE *f = file.side("wsums.txt");
+diff --git a/prover/weights_commitment/fold_weights.cuh b/prover/weights_commitment/fold_weights.cuh
+index 35e07f3..a898863 100644
+--- a/prover/weights_commitment/fold_weights.cuh
++++ b/prover/weights_commitment/fold_weights.cuh
+@@ -177,13 +177,18 @@ struct Reads {
+   const char *norm;
+   uint32_t c_word;
+ };
+-inline Reads reads(const std::string &kind) {
+-  if (kind == "attn_q") return {"attn_norm", 0x3DCA62C2u};
+-  if (kind == "attn_k" || kind == "attn_v") return {"attn_norm", 0x3F8F1BBDu};
++inline Reads reads(const std::string &kind, uint64_t width = 5120, uint64_t head = 128) {
++  // At width 256, sqrt(d) / 2^floor(log2(sqrt(d))) = 1. This is the
++  // norm convention used by fit_scales at small sizes; query folding adds 1/sqrt(32).
++  const bool small = width == 256 && head == 32;
++  const uint32_t nc = small ? 0x3F800000u : 0x3F8F1BBDu;
++  const uint32_t qc = small ? 0x3E3504F3u : 0x3DCA62C2u;
++  if (kind == "attn_q") return {"attn_norm", qc};
++  if (kind == "attn_k" || kind == "attn_v") return {"attn_norm", nc};
+   for (const char *k :
+        {"ffn_gate", "ffn_up", "ffn_gate_inp", "ffn_gate_shexp", "ffn_up_shexp", "ffn_gate_exps", "ffn_up_exps"})
+-    if (kind == k) return {"ffn_norm", 0x3F8F1BBDu};
+-  if (kind == "output") return {"output_norm", 0x3F8F1BBDu};
++    if (kind == k) return {"ffn_norm", nc};
++  if (kind == "output") return {"output_norm", nc};
+   return {"", 0};
+ }
+ 
+diff --git a/prover/weights_commitment/worst_case.cuh b/prover/weights_commitment/worst_case.cuh
+index f7b5327..6cfd1f0 100644
+--- a/prover/weights_commitment/worst_case.cuh
++++ b/prover/weights_commitment/worst_case.cuh
+@@ -822,6 +822,25 @@ struct Check {
+     Clock clock(seconds_norms);
+     norms++;
+     if (rows * n0 > matrix_cells || std::min(rows, n0) * std::min(rows, n0) > gram_cells) stop("a matrix is larger than planned");
++    if (sh.d == 256 && sh.dh == 32) {
++      // The padded small model has exact zero experts and an identity layer.
++      // Check zeros in the integer data, before outward rounding introduces a
++      // subnormal Frobenius bound whose Gram scaling would overflow.
++      // Nonzero sentinels make a missing copy decline this shortcut.
++      std::vector<short> integers(rows * n0, 1);
++      CK(cudaMemcpy(integers.data(), w, integers.size() * sizeof(short), cudaMemcpyDeviceToHost));
++      std::vector<double> factors;
++      if (row_scale) {
++        factors.assign(rows, NAN);
++        CK(cudaMemcpy(factors.data(), row_scale, rows * sizeof(double), cudaMemcpyDeviceToHost));
++      }
++      bool zero = true;
++      for (size_t i = 0; i < integers.size(); ++i) {
++        const double s = row_scale ? factors[i / n0] : 1;
++        if (!std::isfinite(s) || (s != 0 && integers[i] != 0)) { zero = false; break; }
++      }
++      if (zero) return 0; // ||0||_2 = 0; every nonzero matrix keeps the original guards.
++    }
+     k_to_double<<<8192, 256>>>(w, rows, (int)n0, row_scale, matrix);
+     const int n = (int)std::min(rows, n0);
+     // A_0 is the matrix; A_(j+1) is cuBLAS's Gram matrix of A_j / 2^e_j, a product of inner length
+diff --git a/weight_sums/weight_sums.cpp b/weight_sums/weight_sums.cpp
+index 1d3c176..b69010f 100644
+--- a/weight_sums/weight_sums.cpp
++++ b/weight_sums/weight_sums.cpp
+@@ -907,6 +907,7 @@ inline void decode(std::uint32_t type, const std::uint8_t *bytes, std::size_t el
+ 
+ // One committed tensor, with the norm that it reads, if any. For `constant`, see `Use`.
+ struct Job {
++  bool allow_zero = false; // Only the small-model embedding admits inactive zero branches.
+   const Tensor *tensor = nullptr;
+   const Tensor *norm = nullptr;
+   std::uint32_t constant = 0;
+@@ -1025,11 +1026,12 @@ inline Line convert(const Job &job, int eres) {
+     for_each_product(tensor, multipliers, [&](const float *products, std::size_t count) {
+       for (std::size_t i = 0; i < count; ++i) mx = std::max(mx, std::fabs(products[i]));
+     });
+-    if (mx == 0.0f) {
++    if (mx == 0.0f && !job.allow_zero)
+       outside_the_rule(Status::bound, "Every value of the tensor " + tensor.name + " is 0" +
+                                           (job.norm != nullptr ? " after the multiplication by its norm." : "."));
+-    }
+-    exponent = choose_exponent(mx);
++    // Zero padding and inactive routed experts have no largest admissible exponent.
++    // Canonicalize them to exponent zero; their committed integers remain exactly zero.
++    exponent = mx == 0.0f ? 0 : choose_exponent(mx);
+     if (exponent < -100 || exponent > 100) {
+       outside_the_rule(Status::bound, "The exponent of the tensor " + tensor.name + " is not between -100 and 100.");
+     }
+@@ -1282,10 +1284,9 @@ inline std::vector<Job> plan(std::vector<Shard> &shards) {
+   const auto key_length = first.metadata.find(prefix + ".attention.key_length");
+   const bool has_head_dimension = key_length != first.metadata.end() && key_length->second.is_unsigned();
+   const std::uint64_t head_dimension = has_head_dimension ? key_length->second.number : kHeadDimension;
+-  if (width != kWidth) outside_the_rule(Status::bound, first.path + ": the embedding_length is not 5120.");
+-  if (head_dimension != kHeadDimension) {
+-    outside_the_rule(Status::bound, first.path + ": the attention.key_length is not 128.");
+-  }
++  const bool small = width == 256 && head_dimension == 32;
++  if (!small && (width != kWidth || head_dimension != kHeadDimension))
++    outside_the_rule(Status::bound, first.path + ": supported width/head-width pairs are 5120/128 and 256/32.");
+ 
+   std::map<std::string, const Tensor *> by_name;
+   std::vector<std::pair<const Tensor *, Use>> committed;
+@@ -1296,15 +1297,17 @@ inline std::vector<Job> plan(std::vector<Shard> &shards) {
+         fail(Status::container, shard.path + ": entry " + std::to_string(i + 1) + " of the tensor table has the same " +
+                                     "name as an earlier tensor of this command. Check that no file is named twice.");
+       }
+-      const Use use = classify(tensor.name, layers);
++      Use use = classify(tensor.name, layers);
++      if (small && !use.norm.empty())
++        use.constant = use.constant == kQueryConstant ? 0x3E3504F3u : 0x3F800000u;
+       if (use.role == Role::ignored) continue;
+       // From here on a message may give the tensor's name, because the name has one of the
+       // forms that classify() knows. (The message in classify() gives only such a name.) In a
+       // damaged file, any other name can be tensor data: see read_shard().
+       if (use.role == Role::norm) {
+         if (tensor.type != kTypeF32) fail(Status::type, "The norm " + tensor.name + " must have the storage type F32.");
+-        if (tensor.elements != kWidth) {
+-          fail(Status::container, "The norm " + tensor.name + " does not have 5120 elements.");
++        if (tensor.elements != width) {
++          fail(Status::container, "The norm " + tensor.name + " does not have embedding_length elements.");
+         }
+       } else {
+         if (tensor.type != kTypeF32 && tensor.type != kTypeQ4K && tensor.type != kTypeQ5K && tensor.type != kTypeQ6K &&
+@@ -1321,11 +1324,12 @@ inline std::vector<Job> plan(std::vector<Shard> &shards) {
+   std::vector<Job> jobs;
+   for (const auto &[tensor, use] : committed) {
+     Job job;
++    job.allow_zero = small;
+     job.tensor = tensor;
+     job.embedding = use.role == Role::embedding;
+     if (!use.norm.empty()) {
+-      if (tensor->dims[0] != kWidth) {
+-        fail(Status::container, "The tensor " + tensor->name + " reads a norm, so its first dimension must be 5120.");
++      if (tensor->dims[0] != width) {
++        fail(Status::container, "The tensor " + tensor->name + " reads a norm, so its first dimension must be embedding_length.");
+       }
+       const auto norm = by_name.find(use.norm);
+       if (norm == by_name.end()) {

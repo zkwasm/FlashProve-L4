@@ -1,0 +1,32 @@
+# Measured times and sizes that run.sh prints; the host memory and disk space that it checks for.
+# One figure a line: a name, a blank, the value: 1 to 80 of A-Z a-z 0-9 blank , . - of which the
+# first and the last are a letter or a digit.
+# run.sh stops if a name is missing or comes twice, or if a line has another name or form.
+# Whatever fills this file keeps these comment lines: run.sh's messages point to them.
+# taken_with, machine: with which programs, on which machine they were measured.
+# machine_memory: that machine's host memory, as in the line machine.
+# sums_time, calibrate_time: how long bin/weight_sums and scales/calibrate.py take in the stage fit.
+# commit_peak, prove_peak: most host memory in use, file cache apart, while cp_commit, cp_prove ran.
+# worst_case_time: how long after its start cp_commit prints the result of its worst-case check.
+# commit_memory, prove_memory: GB of available host memory without which commit, prove do not start.
+# commit_disk, prove_disk: GB of free disk space that commit and prove check for.
+# all_disk: GB that all stages need together.
+# commit_memory, prove_memory, commit_disk, prove_disk, all_disk: digits alone, 1 to 99999, no unit.
+# commit_peak, prove_peak: digits, 1 to 99999, one blank, GB; less than commit_memory, prove_memory.
+taken_with other programs, not the released ones
+machine 463 GB of host memory, 24 CPU cores, one H100 with 80 GB
+machine_memory 463 GB
+sums_time 5 to 6 minutes
+calibrate_time 127 s
+commit_peak 310 GB
+commit_memory 330
+commit_time 43 minutes
+worst_case_time 11 minutes
+prove_peak 268 GB
+prove_memory 290
+prove_time 4 minutes
+verify_time 22 s
+build_time 29 minutes on 11 CPU cores of another machine
+commit_disk 10
+prove_disk 1
+all_disk 245

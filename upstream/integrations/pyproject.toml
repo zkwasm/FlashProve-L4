@@ -1,0 +1,42 @@
+# Copyright 2026 Anthropic PBC
+# SPDX-License-Identifier: Apache-2.0
+
+# Installs the four programs of this directory as top-level modules (check_proof, spool,
+# proof_middleware, ask_and_check), so that vLLM can import the middleware:
+#     vllm serve MODEL --middleware proof_middleware.ProofMiddleware
+# Run by its path from a checkout (python3 integrations/check_proof.py), each program finds the
+# others without being installed.
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flashprove-integrations"
+version = "0.16.0"
+description = "Check a proof that FlashProve made of an LLM reply, and get such proofs from a vLLM server"
+license = "Apache-2.0"
+# LICENSE, NOTICE and licenses/ here are copies of the repository's files, because license-files may
+# name only files inside this directory.
+license-files = [
+    "LICENSE",
+    "NOTICE",
+    "licenses/CPython-3.13.16.LICENSE.txt",
+    "licenses/starlette-1.6.0.LICENSE.md",
+    "licenses/uvicorn-0.53.0.LICENSE.md",
+    "licenses/vllm-0.29.0.LICENSE",
+]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+flashprove-check-proof = "check_proof:command"
+flashprove-ask-and-check = "ask_and_check:main"
+flashprove-spool = "spool:main"
+flashprove-middleware-admin = "proof_middleware:main"
+
+[tool.setuptools]
+py-modules = ["check_proof", "spool", "proof_middleware", "ask_and_check"]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "vllm/end_to_end"]

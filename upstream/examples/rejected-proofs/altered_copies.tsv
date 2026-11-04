@@ -1,0 +1,31 @@
+# The altered sets that try_altered_copies.py makes from ../accepted-proof: one row for each set, five columns
+# separated by tabs. Empty lines and lines that begin with # are skipped.
+#
+# description   what the script prints for the row
+# file          the file of ../accepted-proof that is altered: example.proof, example.req, example.y, ivk/key.bin,
+#               ivk/leaf/0.bin, config/policy.txt, config/KL.bin, config/layout.txt; or ID.txt for the value after -id
+# place         first, middle, last: that byte (in ID.txt: that digit).  byte N: byte N, counted from 0.
+#               token N: the lowest byte of the 32-bit word N.  token first-checked (example.req only): the first
+#               reply token that the proof checks.
+#               field NAME (example.proof only): the first byte of the field of that name in the list that
+#               "cp_verify -plan request ... -fields" prints; only a field whose place the list gives as exact
+#               ("at", not "at-most"). Where several fields have that name, add which: "field NAME #2" is the second.
+#               end: behind the last byte.
+# change        flip: the byte's lowest bit.  put HEX: write these bytes over the bytes that start there.
+#               put HEX over HEX: the same, and the second HEX, of the same number of bytes, says what must stand there before.
+#               cut: remove that byte and all behind it.  append HEX: add these bytes (place: end).
+#               other-digit: another hex digit (ID.txt only).
+# last line     the last line that the verifier must print; it begins with "NO: "
+#
+# Every proof, key.bin and leaf file has other bytes, and most of their fields lie at other places. So a row with
+# "byte N" fits one stored file alone: write it with "put HEX over HEX", and the script refuses it on another file.
+one bit of the proof changed	example.proof	middle	flip	NO: proof-refused
+the proof's last byte cut off	example.proof	last	cut	NO: proof-refused
+one byte added to the proof	example.proof	end	append 00	NO: proof-refused
+one bit of ivk/key.bin changed	ivk/key.bin	middle	flip	NO: key-refused
+one bit of ivk/leaf/0.bin changed	ivk/leaf/0.bin	middle	flip	NO: entry-refused
+a prompt token changed	example.req	token 0	flip	NO: proof-refused
+a checked reply token changed	example.req	token first-checked	flip	NO: proof-refused
+another token after the request	example.y	token 0	flip	NO: reply-differs
+another scale in KL.bin	config/KL.bin	middle	flip	NO: model-statement
+another commitment ID	ID.txt	last	other-digit	NO: model-statement

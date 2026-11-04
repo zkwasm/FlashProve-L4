@@ -1,0 +1,184 @@
+version H821
+sec 128
+reading 1
+rowcost 1
+slots 64
+answers 1
+record 1
+work field 0 0 0
+work sample 0 0 0
+work closeness 0 0 0
+work positions 20 28 32
+work smallness 0 0 0
+salt 40
+listed 0
+group link 1 23 22 17 13
+stages link 4 3 22 17 3 3 19 16 3 3 16 15 4 4 13 13 0 0 15 15
+group folded 1 24 22 13 6
+stages folded 5 2 21 12 4 2 17 12 4 2 13 12 0 0 14 14
+group omega 1 22 18 13 6
+stages omega 4 3 18 14 4 3 14 13 0 0 15 15
+group own 1 22 18 13 8
+stages own 4 3 18 15 3 3 15 14 3 3 13 13 0 0 15 15
+group once-folded 1 24 22 13 6
+stages once-folded 5 2 21 12 4 2 17 12 4 2 13 12 0 0 14 14
+group once-omega 1 22 18 13 6
+stages once-omega 4 3 18 14 4 3 14 13 0 0 15 15
+group once-own 1 22 18 13 8
+stages once-own 4 3 18 15 3 3 15 14 3 3 13 13 0 0 15 15
+group once-ranges 1 22 18 16 12
+stages once-ranges 4 3 19 17 3 3 17 17 0 0 20 20
+ranges-part 18
+table 11 32 402653184 44040191 0 18
+prof 20
+lt 10
+L 48
+ll 2
+d 5120
+H 40
+G 8
+dh 128
+f 16384
+fe 8192
+NE 128
+V 202048
+eps1_lo 53687
+eps1_hi 0
+eps2_lo 53687
+eps2_hi 0
+cs 12
+theta0_lo 500000
+theta0_hi 0
+hq 2
+hv 1
+ho 1
+hgD 1
+huD 1
+hdD 1
+hr 1
+ut 1
+la 16
+nmin 20
+D 2048
+tau 128
+lmaf 16
+NAf 3
+lmad 15
+NAd 1
+lmar 13
+lmb 16
+lmq 16
+lmx 16
+wb_qk 13
+wb_v 13
+wb_o 13
+wb_g 13
+wb_u 13
+wb_gs 13
+wb_us 13
+wb_gr 13
+wb_ur 13
+wb_dn 13
+wb_dnr 13
+wb_r 13
+iota_0 1
+iota_1 1
+iota_2 1
+iota_3 2
+iota_4 1
+iota_5 1
+iota_6 0
+iota_7 0
+seed_lo 1
+seed_hi 0
+lB 6
+S 12
+rx 8
+kFM 15
+kFD 16
+lmS 16
+NAs 1
+lmh 13
+lmo 16
+lmbA 14
+iotaA_0 57
+MF 44
+KF 30
+epsF_lo 53687
+epsF_hi 0
+toksrc 1
+lmhf 16
+NHf 4
+lmhd 14
+lmhr 13
+lmbH 15
+wb_emb 21
+wb_head 13
+iotaH_0 1
+iotaH_1 1
+iotaH_2 1
+iotaH_3 0
+iotaH_4 0
+iotaH_5 0
+C 256
+theta 256
+cap 0
+s 15
+sh 8
+sT 4
+F 24
+lidb 28
+nminH 27
+rcl 1
+gcl 1
+xl 5
+tsilu0 2048398297
+tsilu1 192427613
+tsilu2 2862900154
+tsilu3 2853881485
+tsilu4 2797826050
+tsilu5 1420723544
+tsilu6 3686369553
+tsilu7 2593882461
+tsig0 1965976300
+tsig1 2359599336
+tsig2 2246761285
+tsig3 2426172242
+tsig4 3869868832
+tsig5 310049175
+tsig6 339407438
+tsig7 2601410768
+trope0 786409086
+trope1 1563166184
+trope2 1100635208
+trope3 2272768750
+trope4 1260813977
+trope5 3744463197
+trope6 3300849996
+trope7 4050797957
+texp0 3648852807
+texp1 2402568834
+texp2 4186852988
+texp3 523559909
+texp4 1873895626
+texp5 3042864545
+texp6 1726265496
+texp7 165292856
+call R16a R16 G U
+call R16b R16 N1 N1H N2 N2H O D V
+call R16c R16 QK QKH XR LR LT DD
+call R8 R8 GH UH OH DH VH ROW LH SEL L3 G0
+call FC FC CN1 CN2 CQK CV CLR
+call FS FS MR CG
+call FL FL F
+call R16d R16 UT
+callA KR KR RM RD
+callA KFD KFD FM FD
+callA R16 R16 WL IX
+callA WH WH WH
+callH R16a R16 NF NFH HD0
+callH R16b R16 HD1
+callH R8 R8 ROW HD2
+callH FEa FE HE0
+callH FEb FE HE1
+callH FC FC CNF

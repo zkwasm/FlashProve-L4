@@ -1,0 +1,2 @@
+zero bound 2.222758749485078e-162; reason the matrix library's product is not a product in binary64, or the matrix or a slice of it holds only zeros
+zero norm refused: bound 2.222758749485078e-162, the matrix library's product is not a product in binary64, or the matrix or a slice of it holds only zeros

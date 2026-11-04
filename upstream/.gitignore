@@ -1,0 +1,20 @@
+# Part of what the commands printed in this repository's pages leave inside a clone. None of it is a source. Not listed, among others: verifier-build.log, quickstart-gpu.out, audit.log and the directory VENV.
+
+# Programs: verifier/build.sh and weight_sums/build.sh write to bin/, prover/build.sh to prover/build/.
+/bin/
+/prover/build/
+
+# Virtual environments that the pages' commands create.
+/.venv/
+/.venv-tests/
+/integrations/vllm/integer_model/.venv/
+
+# What pip leaves behind when it installs one of the two Python packages from its directory.
+/integrations/build/
+/integrations/*.egg-info/
+/integrations/vllm/integer_model/build/
+/integrations/vllm/integer_model/*.egg-info/
+
+# What Python and pytest leave behind.
+__pycache__/
+.pytest_cache/

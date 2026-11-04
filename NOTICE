@@ -1,0 +1,7 @@
+FlashProve-L4 is an independent adaptation of Anthropic FlashProve.
+Upstream: https://github.com/anthropics/FlashProve
+Base commit: 9e2bdd8ff5bf9c62f18263d7dac189b0400b260c
+Upstream copyright and notices are retained under upstream/NOTICE and upstream/licenses/.
+Modifications: L4 kernels/build, small-model weight loading and exact-zero bounds, macOS entropy fallback.
+New orchestration, CPU reference and tests: Apache-2.0.
+TinyStories260K and llama2.c reference files: MIT, see models/stories260K/REFERENCE-LICENSE.

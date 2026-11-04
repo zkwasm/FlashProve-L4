@@ -1,0 +1,96 @@
+# Johnson radius, 128 bits a round, proof of work 20 / 28 / 32 bits on draws of positions and 20 on closeness rounds; p = 2^64 - 2^32 + 1, plain Reed-Solomon codes. (The table's code of length 2^33 is a
+# union of two cosets.)
+#
+# One request of 1,024 tokens in a batch of 24 (64 slots), in the arrangement with ONE group a segment and three prover messages that
+# hold oracles (three trees a segment, all read at the segment's one list), and the committed table tested at a
+# distance of one eighth. The numbers of rows are those of an arrangement other than that of the files of frame/, as averages a segment. THE SHAPES OF THE SUM-CHECKS IN A SEGMENT ARE STAND-INS, chosen
+# to meet totals counted elsewhere (about 48,000 verifier's messages and 112,000 scalars a request): they bear on the number of
+# rounds and on 2.7 MB of scalars, not on the largest error. The forests of the committer's range proof are a stand-in too
+# (scalars only). Fresh masks of the later stages and the last stage's masking codeword ride in the switch's message.
+field goldilocks
+target 128
+bytes salt=40
+work positions request=20 shared=28 once=32
+work closeness request=20 shared=20 once=20
+
+code long   log_n=23 ell=2^22 r=218
+code longE  log_n=23 ell=2^22 r=218 E=1
+code mask   log_n=15 ell=2^13 r=218 E=1
+code maskL  log_n=15 ell=2^13 r=218 E=1
+code zu     log_n=24 ell=2^22 r=110 E=1
+code maskU  log_n=10 ell=2^6  r=110 E=1
+code omega  log_n=22 ell=2^18 r=3640 E=1
+code maskO  log_n=11 ell=2^6  r=56 E=1
+code maskC  log_n=13 ell=2^8  r=56 E=1
+code table  log_n=33 ell=402653184 r=44040191
+
+group seg   main=long  mask=mask  k=7 h=0 cube=31 rows=2^16 
+group last  main=longE mask=maskL k=1 h=0 cube=24 rows=2^10 
+group gu    main=zu    mask=maskU k=7 h=0 cube=30 rows=2^10 scope=shared 
+group om    main=omega mask=maskO k=4 h=0 cube=23 rows=2^10 scope=shared 
+group own   main=omega mask=maskC k=4 h=0 cube=23 rows=2^10 
+group guo   main=zu    mask=maskU k=7 h=0 cube=30 rows=2^10 scope=once 
+group omo   main=omega mask=maskO k=4 h=0 cube=23 rows=2^10 scope=once 
+
+tree P1 log_n=23 rows_F=84 rows_E=2 copied_rows_E=2   # carried message, kept rows, cells, multiplicities; mask row and fold mask
+tree P2 log_n=23 rows_E=1                                          # partial evaluations of the packed cells
+tree P3 log_n=23 rows_F=31                                         # digits and their multiplicities
+tree PL log_n=23 rows_E=2 copied_rows_E=2              # the last closing's message
+tree T  log_n=33 rows_F=2048
+tree GU log_n=24 rows_E=107 copied_rows_E=2
+tree OM log_n=22 rows_E=12  copied_rows_E=2
+tree OC log_n=22 rows_E=12
+tree WC log_n=22 rows_E=1   copied_rows_E=2
+table W code=table v=11 delta_once=1/8
+
+part key
+scope once
+record table=W where=table
+scalars n=94000 where=range-proof-stand-in
+lin table=W tree=T instances=1 k_lo=18 rows_log=22 w=omo:19 u=guo:30 omega=omo:23 one_time=1 where=one-time-test
+iopp group=guo trees=GU rows=2^8 roots=0 masks_ride=1 stages=5:2:21:12,4:2:17:12,4:2:13:12,0:0:14:14 where=folded-table 
+iopp group=omo trees=OM,WC rows=2^8 roots=0 masks_ride=1 stages=4:3:18:14,4:3:14:13,0:0:15:15 where=Omega 
+
+part entry
+record table=W where=table
+link table=W tree=T u=guo:30 where=link
+iopp group=guo trees=GU rows=2^8 roots=0 masks_ride=1 stages=5:2:21:12,4:2:17:12,4:2:13:12,0:0:14:14 where=folded-tables 
+
+part proof
+scope request
+chain where=chains
+repeat 25
+  send samples=seg:24,seg:26,seg:31 roots=1 where=segments
+  repeat 2
+    lkp keys_log=28 where=segments
+    product_tree levels=28 where=segments
+    product_tree levels=16 more=5 where=segments
+  end
+  repeat 4
+    zero variables=24 where=segments
+    psc variables=24 degree=4 degree_Y=3 values=3 where=segments
+  end
+  send samples=seg:22 roots=1 where=segments
+  rng columns=2^16 where=segments
+  send samples=seg:27,seg:24 roots=1 where=segments
+  lkp keys_log=26 where=segments
+  product_tree levels=26 where=segments
+  bat_sigma rows=2^14 where=segments
+  psc variables=22 Y=0 where=segments
+  scalars n=560 where=segments
+  bat group=seg rows=2^13 where=segments
+  fold group=seg roots=0 where=segments
+  send samples=seg:24 roots=0 where=segments
+  loc group=seg trees=P1,P2,P3 where=segments
+end
+psc variables=22 Y=0 where=segments
+iopp group=last trees=PL rows=2^10 roots=0 masks_ride=1 stages=4:3:22:17,3:3:19:16,3:3:16:15,4:4:13:13,0:0:15:15 where=last-test 
+chain where=chains
+lin table=W tree=T instances=24 k_lo=18 rows_log=22 w=own:19 u=gu:30 omega=om:23 where=table
+scope shared
+iopp group=gu trees=GU rows=2^8 roots=0 masks_ride=1 stages=5:2:21:12,4:2:17:12,4:2:13:12,0:0:14:14 where=folded-table 
+iopp group=om trees=OM rows=2^8 roots=0 masks_ride=1 stages=4:3:18:14,4:3:14:13,0:0:15:15 where=Omega 
+scope request
+iopp group=own trees=OC,WC rows=2^8 roots=0 masks_ride=1 opens=64 stages=4:3:18:15,3:3:15:14,3:3:13:13,0:0:15:15 where=own-test 
+
+sum first-download of=key+entry

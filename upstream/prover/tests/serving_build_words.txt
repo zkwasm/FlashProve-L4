@@ -1,0 +1,93 @@
+BLK-NOT-FOR-SERVING: built with a switch of a test or of a cheating prover
+CHAIN_ARRAYS
+CHAIN_CHECK_FORMS
+CHAIN_HANDS_BOUND
+CHAIN_HELD_STEM
+CHAIN_L_ON_HOST
+CHAIN_PUT_VECTORS
+CHAIN_ROWS_OUT
+CHAIN_ROW_VALUE
+CHAIN_TIMES
+COINS_CONTEXTS
+COINS_DRAW_LOST
+COINS_DRAW_NOT_MADE
+COINS_LEDGER
+COINS_REFUSED_DRAW
+COMMIT_LIE
+COMMIT_LIE_COUNT
+COMMIT_LIE_LOOKUP
+DOOR_CHEAT
+FORMF_GENERATED_VALUES
+FORMF_PLANTED_INTEGER
+FORMF_STREAMS_REACH
+H_HC_MASK_LIMIT
+H_HC_SEED
+LAYER_LIE
+LENT_BACK
+LENT_POISON
+LENT_STALE
+LIE
+LIE_SEAT
+NVTX_INJECTION64_PATH
+PLANT
+ROWS_BEND_U
+ROWS_COUNT_FAULT
+ROWS_DUMP
+ROWS_DUMP_FILES
+ROWS_LOSE_COINS
+ROWS_LOSE_COPY
+ROWS_LOSE_LAUNCH
+ROWS_LOSE_LINK_PADS
+ROWS_LOSE_PADS
+ROWS_LOSE_SLOT_PADS
+ROWS_ONCE_GROUP
+ROWS_ONCE_KEY
+ROWS_REPORT
+ROWS_STOP_BEHIND
+ROWS_STRIPS
+ROWS_TABLE_FAULT
+WEIGHT_FEED
+-test-seed
+-test-bits
+-test-coins
+-test-leaf
+-test-no-requests
+-leaves a..b, for tests: of the M leaves only a, a + 1, .., b - 1 are made (b itself is not among them), with none the anchor alone; no call can finish such a commitment
+for tests: -test-seed <file of 32 bytes>: the seed is read and not drawn, a link's coins take in no fresh bytes, and nothing is hidden; isk.txt then says "seed test", and the worst-case check is left out unless -worst-case or -worst-case-table is given; -test-bits <n>: cp_verify's part-calls ask for n bits, below the bar, and are no verification. On a folder of weights no option for tests is taken: with -weights both go with generated or made-up-blocks alone
+ (a test's run, under -test-seed, leaves the check out)
+; a test's call takes it with -test-seed
+cp_commit: a test's run: the worst-case check is left out, and isk.txt gets no line ranges
+makes the check under -test-seed too; elsewhere it changes nothing
+# isk.txt's line ranges is not asked for (isk.txt says "seed test"): in this run "failed" may depend on the weights
+refused (cp-test-coins): -test-coins is taken only where isk.txt says "seed test", as it does on a commitment that cp_commit made with -test-seed: with -test-coins nothing is hidden from whoever has the coins' file, and one file used twice repeats the coins. For a test, make a commitment with -test-seed. No key protects that line, and whoever can write isk.txt can add it: never add it to a commitment that was made without -test-seed, where it would also take away other checks, among them that of isk.txt's line ranges
+ is not a file of 32 bytes
+cp_commit: a run with a test option: what it makes is for tests alone%s
+; the seed is read from a file, so nothing is hidden
+  -test-coins <file>  for tests: the 32 bytes of batch b are bytes 32 b .. 32 b + 31 of the file, and the program ends when they are used up. Nothing is then hidden from whoever has the file
+  -test-leaf <k>    with -test-coins alone: every batch is held on leaf k
+-test-leaf goes with -test-coins alone
+  -test-no-requests with -test-coins alone: a batch's coins do not depend on its requests' words
+-test-no-requests goes with -test-coins alone
+  -test-coins is taken only where isk.txt says "seed test", as it does on a commitment made with -test-seed. No key protects that line, and whoever can write isk.txt can add it: never add it to a commitment that was made without -test-seed
+  -measure          print lines that begin with "measure:" and contain each batch's times
+-test-leaf takes a leaf's number
+-test-leaf: the commitment's live leaves are %u to %u
+-test-coins: the file must hold 32 bytes for each batch
+-test-coins: the file holds no coins for a further batch
+p258 THE BATCHES' COINS COME FROM A TEST'S FILE: nothing is hidden from whoever has it
+p258 THIS IS A TEST BUILD: ITS FILES ARE NOT PROOFS
+this is a test build: it requires -test-coins
+COINS_REFUSED_DRAW: refused: every entry of the list must be a switch that the test build accepts, and at most one entry may begin with something other than seat:, fold:, leaves:, between: or in:
+# test build: this try drew %ld elements on the host and took %ld inverses (COINS_REFUSED_DRAW=element:<k>:p or element:<k>:zero takes effect for k from 1 to the first number, inverse:<k> for k from 1 to the second; a larger k has no effect)
+H_HC_SEED is not the number of a seed of the tests, 0 to 255
+usage: the test variable H_HC_MASK_LIMIT is not one digit 1 to 7 (the mask generator then takes a block again if a value is that many eighths of the threshold or more)
+usage: the test variable H_HC_MASK_LIMIT is set, but this program has the mask generator's threshold compiled in and takes no other: unset it, or use a test build (-DHC_MASK_LOW_LIMIT=1)
+:past-the-scan
+cp_commit: FORMF_PLANTED_INTEGER takes <unit>:<value> or <unit>:<value>:past-the-scan, and the value has at most 32 bits
+cp_commit: FORMF_PLANTED_INTEGER: the layout has %zu units
+cp_commit: FORMF_PLANTED_INTEGER: unit %zu holds integers of 16 bits
+cp_commit: FORMF_PLANTED_INTEGER acts only where all of the committed matrix lies in GPU memory: this shape is read in cuts of the stored tensors
+cp_commit: FORMF_GENERATED_VALUES takes <a>, <a>:<b> or <a>:<b>:<unit>, and a value has at most 32 bits
+cp_commit: FORMF_GENERATED_VALUES goes with -weights generated alone
+cp_commit: FORMF_GENERATED_VALUES: unit %zu holds integers of 16 bits
+cp_commit: the dump %s cannot be written

@@ -1,0 +1,91 @@
+# Altered copies of ../accepted-proof: at least one row for each sort of item that the format's walker tells apart in
+# ivk/key.bin, ivk/leaf/0.bin and example.proof (not one for every field of every round), and some rows for example.req and example.y.
+# The columns are those of altered_copies.tsv, whose first lines explain them. Give this file to
+# try_altered_copies.py as its third argument.
+# Each row names its place by a byte's number or as the file's end, so the table fits the stored
+# files alone: on any other file a row's "put NEW over OLD" finds other bytes, and the script stops
+# before it tries any copy.
+# A description begins with the row's number: K for ivk/key.bin, E for ivk/leaf/0.bin, P for
+# example.proof, R for example.req, Y for example.y. A number that is left out stands for a sort
+# of item that this configuration does not have.
+# In a description, (field "NAME") is the item's name in the list that
+# "cp_verify -plan request ... -fields" prints, and rounds are counted from 1 within a chain.
+K01: the file's last byte: the last given digest of the opening of tree number 8 of the second chain after round 16 BASE of the second chain: its highest bit flipped	ivk/key.bin	byte 1096407	put 0d over 8d	NO: key-refused
+K02: the anchor's root, which the commitment ID covers: the highest bit of its last byte flipped	ivk/key.bin	byte 39	put 91 over 11	NO: model-statement
+K03: an element of a prover's message: the first of round 6 PSC epsilon of the one-time chain (field "ranges: bytes, tie: hiding sum"): the lowest bit of its first word flipped	ivk/key.bin	byte 6328	put 93 over 92	NO: key-refused
+K04: an element in the middle of a long message: round 16 BASE of the second chain (field "a request's own test, last stage: masked message and randomness"): the lowest bit of its first word flipped	ivk/key.bin	byte 1060632	put 18 over 19	NO: key-refused
+K05: an answer to an out-of-domain sample: the first of round 2 SEND answer of the one-time chain: the lowest bit of its third word flipped	ivk/key.bin	byte 6264	put b8 over b9	NO: key-refused
+K06: a root that the prover sends: round 1 SEND seed of the one-time chain (field "masks of the committer's rows on the table: root"): the highest bit of its last byte flipped	ivk/key.bin	byte 6247	put 7b over fb	NO: key-refused
+K07: the 32 random bytes of the one-time chain: the lowest bit of the first byte flipped	ivk/key.bin	byte 6184	put ab over aa	NO: key-refused
+K08: between the one-time chain and the shared chain: the slot of the one-time chain's seal in its binding tree (one word): 1 for 0	ivk/key.bin	byte 376896	put 01 over 00	NO: key-refused
+K09: between the one-time chain and the shared chain: the salt of the slot's leaf in the binding tree of the one-time chain's seal: the highest bit of its last byte flipped	ivk/key.bin	byte 376943	put 52 over d2	NO: key-refused
+K10: an opened symbol of the anchor: the first symbol of the first column in the opening of the anchor after round 4 LOC of the shared chain: its lowest bit flipped	ivk/key.bin	byte 377008	put 1d over 1c	NO: key-refused
+K11: an opened leaf's salt: that of the first column in the opening of tree number 1 of the one-time chain after round 3647 CS of the one-time chain: the lowest bit of its first byte flipped	ivk/key.bin	byte 165064	put 34 over 35	NO: key-refused
+K12: a given digest: the first of the opening of tree number 1 of the one-time chain after round 3647 CS of the one-time chain: the lowest bit of its first byte flipped	ivk/key.bin	byte 184688	put 03 over 02	NO: key-refused
+K13: a nonce: that of round 3647 CS of the one-time chain: its lowest bit flipped	ivk/key.bin	byte 164688	put b7 over b6	NO: key-refused
+K15: a word that encodes no element: the third word of the last element of round 16 BASE of the second chain written as p = 2^64 - 2^32 + 1	ivk/key.bin	byte 1080016	put 01000000ffffffff over 7d98b1fe543516c1	NO: key-refused
+K16: the file's first four bytes, which say its kind: a leaf file's (CPEN) for a key file's (CPIK)	ivk/key.bin	byte 0	put 4350454e over 4350494b	NO: cp-key-head
+K17: the file without its last byte	ivk/key.bin	byte 1096407	cut	NO: key-refused
+K18: one zero byte after the file's end	ivk/key.bin	end	append 00	NO: key-refused
+K19: an opened symbol of one of the chain's own trees: the first in the opening of tree number 1 of the one-time chain after round 3647 CS of the one-time chain: its lowest bit flipped	ivk/key.bin	byte 164696	put 51 over 50	NO: key-refused
+K20: a word that encodes no element: the last opened symbol of the opening of tree number 8 of the second chain after round 16 BASE of the second chain written as 2^64 - 1	ivk/key.bin	byte 1085288	put ffffffffffffffff over db68c9c15acc1cf7	NO: key-refused
+K21: the version word: H811 for H821	ivk/key.bin	byte 4	put 48383131 over 48383231	NO: cp-key-head
+K22: a stored answer of the anchor's record: the first, right after the root: the lowest bit of its first word flipped	ivk/key.bin	byte 40	put af over ae	NO: model-statement
+K23: an opened leaf's salt: that of the first column in the opening of the anchor after round 4 LOC of the shared chain: the lowest bit of its first byte flipped	ivk/key.bin	byte 379056	put b7 over b6	NO: key-refused
+K24: a given digest: the first of the opening of the anchor after round 4 LOC of the shared chain: the lowest bit of its first byte flipped	ivk/key.bin	byte 483496	put ff over fe	NO: key-refused
+E01: the file's last byte: the last given digest of the opening of tree number 2 of the link's chain after round 24 BASE of the link's chain: its highest bit flipped	ivk/leaf/0.bin	byte 536951	put 3e over be	NO: entry-refused
+E02: the leaf table's root, which is in the statement of the link's chain: the highest bit of its last byte flipped	ivk/leaf/0.bin	byte 39	put 14 over 94	NO: entry-refused
+E03: an element of a prover's message: the first of round 7 FOLD epsilon of the link's chain (field "the two folded rows, stage 1: hiding sum"): the lowest bit of its first word flipped	ivk/leaf/0.bin	byte 273040	put 0d over 0c	NO: entry-refused
+E04: an element in the middle of a long message: round 24 BASE of the link's chain (field "the two folded rows, last stage: masked message and randomness"): the lowest bit of its first word flipped	ivk/leaf/0.bin	byte 480352	put 3a over 3b	NO: entry-refused
+E05: an opened symbol of the anchor: the first symbol of the first column in the opening of the anchor after round 4 LINK of the link's chain: its lowest bit flipped	ivk/leaf/0.bin	byte 6304	put fc over fd	NO: entry-refused
+E06: an opened symbol of the leaf table: the last symbol of the last column in the opening of the leaf table after round 4 LINK of the link's chain: its lowest bit flipped	ivk/leaf/0.bin	byte 246176	put b4 over b5	NO: entry-refused
+E07: a nonce: that of round 4 LINK of the link's chain: its lowest bit flipped	ivk/leaf/0.bin	byte 6296	put 06 over 07	NO: entry-refused
+E09: the file's first four bytes, which say its kind: a key file's (CPIK) for a leaf file's (CPEN)	ivk/leaf/0.bin	byte 0	put 4350494b over 4350454e	NO: entry-refused
+E10: the file without its last byte	ivk/leaf/0.bin	byte 536951	cut	NO: entry-refused
+E11: an answer to an out-of-domain sample: the first of round 3 SEND answer of the link's chain: the lowest bit of its third word flipped	ivk/leaf/0.bin	byte 6264	put 9b over 9a	NO: entry-refused
+E12: a root that the prover sends: round 2 SEND seed of the link's chain (field "link: root"): the highest bit of its last byte flipped	ivk/leaf/0.bin	byte 6247	put 8d over 0d	NO: entry-refused
+E13: the 32 random bytes of the link's chain: the lowest bit of the first byte flipped	ivk/leaf/0.bin	byte 6184	put 56 over 57	NO: entry-refused
+E14: an opened leaf's salt: that of the first column in the opening of the anchor after round 4 LINK of the link's chain: the lowest bit of its first byte flipped	ivk/leaf/0.bin	byte 8352	put 46 over 47	NO: entry-refused
+E15: a given digest: the first of the opening of the anchor after round 4 LINK of the link's chain: the lowest bit of its first byte flipped	ivk/leaf/0.bin	byte 112792	put 0d over 0c	NO: entry-refused
+E16: a word that encodes no element: the third word of the last element of round 24 BASE of the link's chain written as p = 2^64 - 2^32 + 1	ivk/leaf/0.bin	byte 512672	put 01000000ffffffff over 15e65024dcbfe0c8	NO: entry-refused
+E17: one zero byte after the file's end	ivk/leaf/0.bin	end	append 00	NO: entry-refused
+E18: an opened symbol of one of the chain's own trees: the first in the opening of tree number 0 of the link's chain after round 15 CS of the link's chain: its lowest bit flipped	ivk/leaf/0.bin	byte 273416	put 0e over 0f	NO: entry-refused
+E19: a word that encodes no element: the last opened symbol of the opening of tree number 2 of the link's chain after round 24 BASE of the link's chain written as 2^64 - 1	ivk/leaf/0.bin	byte 521480	put ffffffffffffffff over 82d6f2c6a221f29a	NO: entry-refused
+E20: the version word: H811 for H821	ivk/leaf/0.bin	byte 4	put 48383131 over 48383231	NO: entry-refused
+E21: a stored answer of the leaf table's record: the first, right after the root: the lowest bit of its first word flipped	ivk/leaf/0.bin	byte 40	put 33 over 32	NO: entry-refused
+E22: an opened leaf's salt: that of the first column in the opening of the leaf table after round 4 LINK of the link's chain: the lowest bit of its first byte flipped	ivk/leaf/0.bin	byte 141784	put 7e over 7f	NO: entry-refused
+E23: an opened leaf's salt: that of the first column in the opening of tree number 0 of the link's chain after round 15 CS of the link's chain: the lowest bit of its first byte flipped	ivk/leaf/0.bin	byte 274304	put d1 over d0	NO: entry-refused
+E24: a given digest: the first of the opening of the leaf table after round 4 LINK of the link's chain: the lowest bit of its first byte flipped	ivk/leaf/0.bin	byte 246224	put 47 over 46	NO: entry-refused
+P01: first chain, round 6407 REPLY: an element of a prover's message (an element of E: three words): the next token: its first word 199 written as 199 + p (p = 2^64 - 2^32 + 1): the same value in an encoding that is not canonical	example.proof	byte 1878372	put c8000000ffffffff over c700000000000000	NO: proof-refused
+P02: slot: the request's slot in its batch (one word): 28 written as 28 + 2^6 = 92: its low 6 bits are the true slot	example.proof	byte 3160036	put 5c00000000000000 over 1c00000000000000	NO: proof-refused
+P03: first chain, round 1666 LOC: the round's nonce: another nonce that also gives the 20 bits of proof of work	example.proof	byte 77796	put 229b0f0000000000 over 36650f0000000000	NO: proof-refused
+P04: first chain, round 104 PSC round: an element of a prover's message (an element of E: three words): its first word plus 1	example.proof	byte 4836	put a540e563b12c4e68 over a440e563b12c4e68	NO: proof-refused
+P05: first chain, round 5 PSC epsilon: an element of a prover's message (an element of E: three words): its first word written as p = 2^64 - 2^32 + 1, which encodes no element	example.proof	byte 204	put 01000000ffffffff over d06677e477394a94	NO: chain-refused
+P06: first chain, round 1 SEND seed: a root that the prover sends: the lowest bit of its first byte flipped	example.proof	byte 44	put 1b over 1a	NO: proof-refused
+P07: first chain, round 2 SEND answer: an answer to an out-of-domain sample (an element of E: three words): its first word plus 1	example.proof	byte 108	put cc41e922fe30fcb1 over cb41e922fe30fcb1	NO: proof-refused
+P08: first chain: the chain's 32 random bytes: the lowest bit of the first byte flipped	example.proof	byte 12	put c1 over c0	NO: proof-refused
+P09: first chain, round 6407 REPLY: an element of a prover's message (an element of E: three words): the next token: 200 for 199 (example.y unchanged)	example.proof	byte 1878372	put c800000000000000 over c700000000000000	NO: proof-refused
+P10: first chain, round 8021 BASE: an element of a prover's message (an element of E: three words): its first word plus 1	example.proof	byte 3026276	put 21ffa94680cbb9b4 over 20ffa94680cbb9b4	NO: proof-refused
+P11: first chain, round 1666 LOC: a symbol of an opened column (an element of F: one word), tree number 0 of the first chain, position 1542: plus 1	example.proof	byte 77804	put 43f1f558c1366cb6 over 42f1f558c1366cb6	NO: proof-refused
+P12: first chain, round 1666 LOC: an opened leaf's salt, tree number 0 of the first chain, position 1542: the lowest bit of its first byte flipped	example.proof	byte 78372	put 89 over 88	NO: proof-refused
+P13: first chain, round 1666 LOC: a given digest of an opening, tree number 0 of the first chain, at depth 18: the lowest bit of its first byte flipped	example.proof	byte 210348	put 67 over 66	NO: proof-refused
+P14: shared chain, round 4 LOC: a symbol of an opened column (an element of F: one word), leaf table 0, position 169834: plus 1	example.proof	byte 3160340	put b22702712ab4c771 over b12702712ab4c771	NO: proof-refused
+P15: slot: the salt of the slot's leaf in the batch's binding tree: the lowest bit of its first byte flipped	example.proof	byte 3160044	put 19 over 18	NO: proof-refused
+P16: slot: a digest of the slot's path in the batch's binding tree (the last one, a child of the root): the highest bit of its last byte flipped	example.proof	byte 3160275	put f3 over 73	NO: proof-refused
+P17: second chain, round 16 BASE: the round's nonce: plus 1	example.proof	byte 4116772	put 40d90f0000000000 over 3fd90f0000000000	NO: proof-refused
+P18: second chain: the chain's 32 random bytes: the highest bit of the last byte flipped	example.proof	byte 3842627	put e5 over 65	NO: proof-refused
+P19: head: the number of the leaf table on which the proof was made: plus 1 (ivk/leaf/ holds no leaf file of that number)	example.proof	byte 8	put 01000000 over 00000000	NO: cp-entry-missing
+P20: head: the version word: H811 for H821	example.proof	byte 4	put 48383131 over 48383231	NO: cp-proof-head
+P21: head: the file's first four bytes, which say its kind: a leaf file's (CPEN) for a proof file's (CPPF)	example.proof	byte 0	put 4350454e over 43505046	NO: cp-proof-head
+P22: second chain, round 16 BASE: a given digest of an opening, tree number 24 of the second chain, at depth 5: the file's last byte: its highest bit flipped	example.proof	byte 4145299	put f4 over 74	NO: proof-refused
+P23: the file without its last byte	example.proof	byte 4145299	cut	NO: proof-refused
+P24: one zero byte after the file's end	example.proof	end	append 00	NO: proof-refused
+P25: shared chain, round 4 LOC: an opened leaf's salt, leaf table 0, position 169834: the lowest bit of its first byte flipped	example.proof	byte 3162388	put 4d over 4c	NO: proof-refused
+P26: shared chain, round 4 LOC: a given digest of an opening, leaf table 0, at depth 23: the lowest bit of its first byte flipped	example.proof	byte 3271004	put b2 over b3	NO: proof-refused
+R01: the request: r, the place of the prompt's last token: 59 for 60: the call would be about one token more (token 60) than the proof is	example.req	byte 256	put 3b000000 over 3c000000	NO: proof-refused
+R02: the request: token 0, a token of the prompt: 244 for 243	example.req	byte 0	put f4000000 over f3000000	NO: proof-refused
+R03: the request: e, the end of the checked positions: 65 for 64: more than the 64 tokens that a request has	example.req	byte 260	put 41000000 over 40000000	NO: statement-range
+R04: the request: its last token: 512 for 346: the vocabulary's size, the first number that is no token	example.req	byte 252	put 00020000 over 5a010000	NO: token-range
+Y01: the next token: 200 for 199 (request and proof unchanged)	example.y	byte 0	put c8000000 over c7000000	NO: reply-differs
+Y02: the next token: 512 for 199: the vocabulary's size, the first number that is no token	example.y	byte 0	put 00020000 over c7000000	NO: token-range
+Y03: the token file: four zero bytes after the next token	example.y	end	append 00000000	NO: statement-range

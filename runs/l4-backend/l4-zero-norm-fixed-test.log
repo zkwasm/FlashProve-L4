@@ -1,0 +1,3 @@
+zero bound 0; reason none
+identity bound 1.0556451940914386; reason none
+operator norm: zero=0, identity bound 1.0556451940914386 >= 1, zero row scales=0

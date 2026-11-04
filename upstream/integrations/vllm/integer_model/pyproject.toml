@@ -1,0 +1,51 @@
+# Copyright 2026 Anthropic PBC
+# SPDX-License-Identifier: Apache-2.0
+
+# One distribution, two packages: integer_model evaluates the integer (fixed-point) model with
+# PyTorch and NumPy, and write_float_model needs safetensors too; integer_model_vllm lets vLLM serve
+# it. vLLM finds the plug-in through the entry point below, so the distribution must be installed:
+# PYTHONPATH is not enough.
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "integer-model"
+version = "0.16.0"
+description = "The integer model that the proofs of FlashProve are about, for PyTorch and for vLLM"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE", "licenses/BLAKE2-54f4faa4.COPYING"]
+requires-python = ">=3.13"
+# The results are exact only if PyTorch's float64 products are, so PyTorch is pinned to the tested
+# version, which vLLM 0.29.0 requires (../requirements.txt).
+dependencies = ["numpy", "torch==2.13.0"]
+
+[project.optional-dependencies]
+vllm = ["vllm==0.29.0"]
+float-model = ["safetensors"]
+test = ["pytest==9.0.3"]
+
+[project.entry-points."vllm.general_plugins"]
+integer_model = "integer_model_vllm:register"
+
+[tool.setuptools]
+packages = ["integer_model", "integer_model_vllm"]
+
+[tool.pytest.ini_options]
+minversion = "9.0.3"  # the version that tests/requirements.txt pins
+testpaths = ["tests"]
+pythonpath = ["."]  # the tests run from a checkout, installed or not
+addopts = "--strict-markers"
+# After 15 minutes in one test, print every thread's stack. The test keeps running.
+faulthandler_timeout = 900
+markers = [
+    "gpu: needs one NVIDIA GPU",
+    "vllm: needs vLLM 0.29.0",
+    "prover: needs the prover's programs, in the directory that INTEGER_MODEL_PROVER_BUILD names",
+]
+
+[tool.ruff]
+line-length = 100
+src = [".", "tests"]

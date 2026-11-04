@@ -1,0 +1,14 @@
+run links, tiny edition: a test size that reaches no security level
+format H821
+target 10
+work-on-positions 6
+salt-bytes 40
+nonce-bytes 8
+position-bytes 0
+samples 1
+links 3
+log-length 6
+log-n 9
+mask-log-n 9
+stage 1 1 9 9
+stage 0 0 10 10

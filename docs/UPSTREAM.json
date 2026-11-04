@@ -1,0 +1,8 @@
+{
+  "repository": "https://github.com/anthropics/FlashProve",
+  "commit": "9e2bdd8ff5bf9c62f18263d7dac189b0400b260c",
+  "distribution": "Vendored tracked files present in the tested sparse checkout. Lean dependencies and three unused large example directories are omitted.",
+  "patch": "upstream-l4-small-model.patch",
+  "patchAlreadyApplied": true,
+  "verifierSourceDigest": "c8138323b58e5b35c1e1b379a14028acb19166a601b900ac763593c7a7a7d31e"
+}

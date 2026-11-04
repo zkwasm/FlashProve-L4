@@ -1,0 +1,91 @@
+worst-case 1
+d 256
+# site | layer | parameter | its value | log2 bound | log2 limit | whole bits short
+site | stream at norm 1 | 0 | e_res | 0 | 13.657 | 38.994 | 0
+site | norm 1 quotient | 0 | K1 | 32 | 12.037 | 14.994 | 0
+site | q | 0 | kq | 26 | 37.302 | 40.994 | 0
+site | k | 0 | kk | 26 | 37.692 | 40.994 | 0
+site | v | 0 | kv | 14 | 25.898 | 28.994 | 0
+site | stream at norm 2 | 0 | e_res | 0 | 15.981 | 38.994 | 0
+site | norm 2 quotient | 0 | K2 | 32 | 13.026 | 14.994 | 0
+site | gate | 0 | kg | 16 | 27.550 | 38.000 | 0
+site | up | 0 | ku | 15 | 27.016 | 29.994 | 0
+site | stream at norm 1 | 1 | e_res | 0 | 20.544 | 38.994 | 0
+site | norm 1 quotient | 1 | K1 | 32 | 12.037 | 14.994 | 0
+site | q | 1 | kq | 26 | 37.685 | 40.994 | 0
+site | k | 1 | kk | 26 | 37.693 | 40.994 | 0
+site | v | 1 | kv | 13 | 25.182 | 27.994 | 0
+site | stream at norm 2 | 1 | e_res | 0 | 20.592 | 38.994 | 0
+site | norm 2 quotient | 1 | K2 | 32 | 12.037 | 14.994 | 0
+site | router | 1 | kr | 12 | -1073.999 | 29.994 | 0
+site | gate, shared | 1 | kg | 14 | 25.629 | 36.000 | 0
+site | up, shared | 1 | ku | 14 | 25.960 | 28.994 | 0
+site | gate, routed | 1 | kgR | 12 | -1073.999 | 34.000 | 0
+site | up, routed | 1 | kuR | 11 | -1073.999 | 25.994 | 0
+site | stream at norm 1 | 2 | e_res | 0 | 21.653 | 38.994 | 0
+site | norm 1 quotient | 2 | K1 | 32 | 12.037 | 14.994 | 0
+site | q | 2 | kq | 26 | 37.212 | 40.994 | 0
+site | k | 2 | kk | 26 | 37.480 | 40.994 | 0
+site | v | 2 | kv | 14 | 25.670 | 28.994 | 0
+site | stream at norm 2 | 2 | e_res | 0 | 21.692 | 38.994 | 0
+site | norm 2 quotient | 2 | K2 | 32 | 12.037 | 14.994 | 0
+site | gate | 2 | kg | 14 | 25.525 | 36.000 | 0
+site | up | 2 | ku | 14 | 26.344 | 28.994 | 0
+site | stream at norm 1 | 3 | e_res | 0 | 22.341 | 38.994 | 0
+site | norm 1 quotient | 3 | K1 | 32 | 12.037 | 14.994 | 0
+site | q | 3 | kq | 26 | 37.675 | 40.994 | 0
+site | k | 3 | kk | 26 | 37.648 | 40.994 | 0
+site | v | 3 | kv | 14 | 25.826 | 28.994 | 0
+site | stream at norm 2 | 3 | e_res | 0 | 22.373 | 38.994 | 0
+site | norm 2 quotient | 3 | K2 | 32 | 12.037 | 14.994 | 0
+site | router | 3 | kr | 12 | -1073.999 | 29.994 | 0
+site | gate, shared | 3 | kg | 14 | 26.004 | 36.000 | 0
+site | up, shared | 3 | ku | 14 | 25.548 | 28.994 | 0
+site | gate, routed | 3 | kgR | 12 | -1073.999 | 34.000 | 0
+site | up, routed | 3 | kuR | 12 | -1073.999 | 26.994 | 0
+site | stream at norm 1 | 4 | e_res | 0 | 22.953 | 38.994 | 0
+site | norm 1 quotient | 4 | K1 | 32 | 12.037 | 14.994 | 0
+site | q | 4 | kq | 27 | 37.929 | 41.994 | 0
+site | k | 4 | kk | 26 | 37.332 | 40.994 | 0
+site | v | 4 | kv | 13 | 25.282 | 27.994 | 0
+site | stream at norm 2 | 4 | e_res | 0 | 22.995 | 38.994 | 0
+site | norm 2 quotient | 4 | K2 | 32 | 13.026 | 14.994 | 0
+site | gate | 4 | kg | 15 | 26.828 | 37.000 | 0
+site | up | 4 | ku | 15 | 26.807 | 29.994 | 0
+site | stream at norm 1 | 5 | e_res | 0 | 23.511 | 38.994 | 0
+site | norm 1 quotient | 5 | K1 | 32 | 12.037 | 14.994 | 0
+site | q | 5 | kq | 29 | -1073.999 | 43.994 | 0
+site | k | 5 | kk | 22 | -1073.999 | 36.994 | 0
+site | v | 5 | kv | 10 | -1073.999 | 24.994 | 0
+site | stream at norm 2 | 5 | e_res | 0 | 23.511 | 38.994 | 0
+site | norm 2 quotient | 5 | K2 | 32 | 12.037 | 14.994 | 0
+site | router | 5 | kr | 12 | -1073.999 | 29.994 | 0
+site | gate, shared | 5 | kg | 12 | -1073.999 | 34.000 | 0
+site | up, shared | 5 | ku | 10 | -1073.999 | 24.994 | 0
+site | gate, routed | 5 | kgR | 12 | -1073.999 | 34.000 | 0
+site | up, routed | 5 | kuR | 10 | -1073.999 | 24.994 | 0
+site | stream at the last norm | 6 | e_res | 0 | 23.511 | 38.994 | 0
+site | last stream, a cell | 6 | e_res | 0 | 23.511 | 38.994 | 0
+site | last norm quotient | 6 | KF | 32 | 12.037 | 14.994 | 0
+site | head margin | 6 | - | 0 | 37.088 | 38.000 | 0
+# layer | log2 of: the addition after attention, ||Wo||, largest ||Wv of a group||, ||heads' outputs|| | the addition after the feed-forward block, ||Wd||, ||diag(S) Wu||, ||Wu||, ||h||, largest S | over the experts, the largest of each: ||Wd_e|| ||h_e||, ||Wd_e||, ||diag(S) Wu_e||, ||Wu_e||, ||h_e||, S
+layer | 0 | 15.660 13.289 13.999 13.371 | 20.481 14.893 23.561 15.050 21.588 750 | 0.000 0.000 0.000 0.000 0.000 0
+layer | 1 | 15.655 13.944 13.284 13.712 | 20.711 14.766 23.906 15.155 21.946 793 | -1073.999 0.000 0.000 0.000 -532.499 1
+layer | 2 | 16.487 14.367 13.956 13.120 | 20.876 14.832 24.004 15.228 22.044 737 | 0.000 0.000 0.000 0.000 0.000 0
+layer | 3 | 16.857 14.588 14.008 13.270 | 21.358 14.686 23.633 14.724 21.673 1027 | -1073.999 0.000 0.000 0.000 -532.499 1
+layer | 4 | 17.877 14.082 13.336 13.796 | 21.776 14.994 23.755 14.734 21.782 910 | 0.000 0.000 0.000 0.000 0.000 0
+layer | 5 | 0.000 0.000 0.000 3.001 | 0.000 0.000 0.000 0.000 -532.499 1 | -1073.999 0.000 0.000 0.000 -532.499 1
+embedding | 13.657
+# split | log2 of the parts of the stream's bound at the last norm: the embedding | the additions after attention | the feed-forward additions of layers without experts | of the shared parts | of the routed parts
+split | 13.657 | 19.081 | 22.735 | 22.071 | 0.000
+# largest | the five largest feed-forward additions: layer, log2
+largest | 4 21.776 | 3 21.358 | 2 20.876 | 1 20.711 | 0 20.481
+# needs | whole bits needed for the stream's bound: for the absolute value of a cell | for a norm's sum of squares
+needs | 24 | 48
+# what if | the limit on the gate table's output (the parameter file's smax) | log2 of the stream's bound at the last norm | whole bits short
+what if | 4095 (the parameter file's) | 23.511 | 0
+what if | 2047 | 23.511 | 0
+what if | 1023 | 23.511 | 0
+what if | 511 | 23.504 | 0
+what if | 255 | 22.721 | 0
+verdict fits

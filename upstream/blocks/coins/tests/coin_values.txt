@@ -1,0 +1,30 @@
+# Known answers of blocks/coins/coins.h, written by coin_values.py, which shares no code with it. Numbers are hexadecimal.
+# seed word i = 01010101 (i + 1); child = seed_child(seed, 6, 0); fresh word i = 10203040 + i; inputs word i = 0a0b0c0d (i + 1)
+child 52830bf9 acc2b3c9 b075859f 3b124eb8 7c838fac 665f3a50 4ef4d345 60757ac4
+process 043bbf14 b063bfb8 1f1e1e2f 2407abd3 ef69f9e4 b0390c34 c914c9a2 00ae1a4a
+# the secret of a table's making: the same child and fresh words, then the table's digest, word i = 0f0e0d0c (i + 1)
+making 736319b4 051450b0 9678d531 14af38dc cd96d8c4 5d6b5874 540025f6 ebe25ed2
+# context: counter, version, object, member, then the key
+context 0 0 0 0 a20e2238 f6999f51 5d24cd02 7fb3aa61 bb4711af affa1665 b8060d6f 47e35a05
+context 5 81902 1 3 ef31a29b 3fe3e879 5158cbd7 104dc045 c34226ce c3921901 36fc470a d952caaa
+context 10000000007 81902 6 0 16de0603 d9c41487 40d9b1ee 86101282 fc407286 612a2b31 25c37180 d0e69779
+# under the second context: stream, number of the word, the word, the element with p = 2^61 - 1, the element with
+# p = 2^64 - 2^32 + 1, and the refused words before each of the two
+coin 4000 0 7f7f5a2c14508792 1f7f5a2c14508792 7f7f5a2c14508792 0 0
+coin 4000 1 1a9817eb3ea71589 1a9817eb3ea71589 1a9817eb3ea71589 0 0
+coin 4000 2 b63da15cb88850b1 163da15cb88850b1 b63da15cb88850b1 0 0
+coin 4000 3 0f3e90cf89a7f148 0f3e90cf89a7f148 0f3e90cf89a7f148 0 0
+coin 4000 4 15df027fdd7db79e 15df027fdd7db79e 15df027fdd7db79e 0 0
+coin 4000 5 1d4e814b1bd6cdcb 1d4e814b1bd6cdcb 1d4e814b1bd6cdcb 0 0
+coin 4000 6 d6035d692ebb4c5b 16035d692ebb4c5b d6035d692ebb4c5b 0 0
+coin 4000 7 7f0dc65e061e5bda 1f0dc65e061e5bda 7f0dc65e061e5bda 0 0
+coin 4000 8 fb642442b6ca2a08 1b642442b6ca2a08 fb642442b6ca2a08 0 0
+coin 4001 0 6128b11fd076a875 0128b11fd076a875 6128b11fd076a875 0 0
+coin 104000 3 66fb607d8982e802 06fb607d8982e802 66fb607d8982e802 0 0
+coin 4006 100000001 d14c4b4275e7ceb8 114c4b4275e7ceb8 d14c4b4275e7ceb8 0 0
+coin 4006 400000002 70426da53003eb65 10426da53003eb65 70426da53003eb65 0 0
+coin 40003fff 200000000003 434b92df66d12b90 034b92df66d12b90 434b92df66d12b90 0 0
+coin 4010 159c99f6 ffffffff6da73e47 1fffffff6da73e47 a1962fcc4aff6d56 0 1
+coin 4010 4f1ce113 ffffffffa550916f 1fffffffa550916f 2eedfe3656776a4d 0 1
+coin 4010 1783afffc ffffffff1bb822b3 1fffffff1bb822b3 db45d9b3bcd789a2 0 1
+coin 4010 3f1d29be4 ffffffff0bd34723 1fffffff0bd34723 70062afc72c3e734 0 1

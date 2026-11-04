@@ -1,0 +1,232 @@
+building two programs, side by side: about half an hour in all. Little is printed meanwhile but the compiler's warnings. The last line of a good end begins THE PROGRAMS ARE BUILT
+building serving_cp_prove
+building serving_cp_commit
+./field/lazy_gl64.cuh(86): warning #550-D: variable "o0" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                        ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+./field/lazy_gl64.cuh(86): warning #550-D: variable "o1" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                            ^
+
+./field/lazy_gl64.cuh(86): warning #550-D: variable "o2" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                                ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o0" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                              ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o1" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                                  ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o2" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                                      ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o3" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                                          ^
+
+./common/zeroing_heap.h(51): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new ") is not allowed
+
+./common/zeroing_heap.h(54): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new[] ") is not allowed
+
+./common/zeroing_heap.h(57): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new ") is not allowed
+
+./common/zeroing_heap.h(60): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new[] ") is not allowed
+
+./common/zeroing_heap.h(75): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(78): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+./common/zeroing_heap.h(81): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(84): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+./common/zeroing_heap.h(87): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(90): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+./common/zeroing_heap.h(93): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(96): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+./field/lazy_gl64.cuh(86): warning #550-D: variable "o0" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                        ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+./field/lazy_gl64.cuh(86): warning #550-D: variable "o1" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                            ^
+
+./field/lazy_gl64.cuh(86): warning #550-D: variable "o2" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                                ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o0" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                              ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o1" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                                  ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o2" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                                      ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o3" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                                          ^
+
+./field/transform_groups_gl64.cuh(74): warning #550-D: variable "o0" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                        ^
+
+./field/transform_groups_gl64.cuh(74): warning #550-D: variable "o1" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                            ^
+
+./field/transform_groups_gl64.cuh(74): warning #550-D: variable "o2" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                                ^
+
+./field/transform_groups_gl64.cuh(129): warning #550-D: variable "c" was set but never used
+    u32 l, h, c;
+              ^
+
+./common/zeroing_heap.h(51): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new ") is not allowed
+
+./common/zeroing_heap.h(54): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new[] ") is not allowed
+
+./common/zeroing_heap.h(57): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new ") is not allowed
+
+./common/zeroing_heap.h(60): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new[] ") is not allowed
+
+./common/zeroing_heap.h(75): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(78): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+./common/zeroing_heap.h(81): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(84): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+./common/zeroing_heap.h(87): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(90): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+./common/zeroing_heap.h(93): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(96): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+./field/lazy_gl64.cuh(86): warning #550-D: variable "o0" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                        ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+./field/lazy_gl64.cuh(86): warning #550-D: variable "o1" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                            ^
+
+./field/lazy_gl64.cuh(86): warning #550-D: variable "o2" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                                ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o0" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                              ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o1" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                                  ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o2" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                                      ^
+
+./field/lazy_gl64.cuh(438): warning #550-D: variable "o3" was set but never used
+      u32 e0, e1, e2, e3, e4, o0, o1, o2, o3;
+                                          ^
+
+./hiding/forest_fused.cuh(350): warning #177-D: variable "g" was declared but never referenced
+    const int warp = threadIdx.x >> 5, lane = threadIdx.x & 31, g = lane >> 2, t4 = lane & 3;
+                                                                ^
+
+./hiding/forest_fused.cuh(350): warning #177-D: variable "t4" was declared but never referenced
+    const int warp = threadIdx.x >> 5, lane = threadIdx.x & 31, g = lane >> 2, t4 = lane & 3;
+                                                                               ^
+
+./attn/front.cuh(379): warning #177-D: variable "p" was declared but never referenced
+      AP &p = P.p;
+          ^
+
+./field/transform_groups_gl64.cuh(74): warning #550-D: variable "o0" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                        ^
+
+./field/transform_groups_gl64.cuh(74): warning #550-D: variable "o1" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                            ^
+
+./field/transform_groups_gl64.cuh(74): warning #550-D: variable "o2" was set but never used
+    u32 e0, e1, e2, e3, o0, o1, o2;
+                                ^
+
+./field/transform_groups_gl64.cuh(129): warning #550-D: variable "c" was set but never used
+    u32 l, h, c;
+              ^
+
+./prover/layer_walk.cuh(766): warning #177-D: variable "W" was declared but never referenced
+    hw::Walk &W = Q.W;
+              ^
+
+./prover/layer_prove.cuh(36): warning #177-D: variable "HT" was declared but never referenced
+    HiddenTail &HT = Q.HT;
+                ^
+
+./prover/layer_prove.cuh(216): warning #177-D: variable "Q" was declared but never referenced
+    HFk &Q = *K.h;
+         ^
+
+./prover/layer_prove.cuh(541): warning #177-D: variable "HT" was declared but never referenced
+    HiddenTail &HT = Q.HT;
+                ^
+
+./common/zeroing_heap.h(51): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new ") is not allowed
+
+./common/zeroing_heap.h(54): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new[] ") is not allowed
+
+./common/zeroing_heap.h(57): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new ") is not allowed
+
+./common/zeroing_heap.h(60): warning #20011-D: calling a __host__ function("zeroing_heap_take(unsigned long, unsigned long)") from a __host__ __device__ function("operator new[] ") is not allowed
+
+./common/zeroing_heap.h(75): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(78): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+./common/zeroing_heap.h(81): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(84): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+./common/zeroing_heap.h(87): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(90): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+./common/zeroing_heap.h(93): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete ") is not allowed
+
+./common/zeroing_heap.h(96): warning #20011-D: calling a __host__ function("zeroing_heap_give(void *)") from a __host__ __device__ function("operator delete[] ") is not allowed
+
+Compiled by /usr/local/cuda-13.2/bin/nvcc, release 13.2, V13.2.86
+build.sh: the compiler passed the check by value on this machine's GPU (compiler_sample: 324 values are the same on the GPU and on the CPU; the kernel has 80 bytes of local memory per thread)
+Compiled by /usr/local/cuda-13.2/bin/nvcc, release 13.2, V13.2.86
+build.sh: the compiler passed the check by value on this machine's GPU (compiler_sample: 324 values are the same on the GPU and on the CPU; the kernel has 80 bytes of local memory per thread)
+Compiled by /usr/local/cuda-13.2/bin/nvcc, release 13.2, V13.2.86
+cp_prove and cp_commit carry a run path to /usr/local/cuda-13.2/targets/x86_64-linux/lib: they load the CUDA libraries from there.
+THE PROGRAMS ARE BUILT: cp_commit, cp_prove and cp_verify lie in /home/tom/FlashProve/prover/build/hc

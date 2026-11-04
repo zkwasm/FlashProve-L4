@@ -1,0 +1,23 @@
+# The planted commands that tools/confine_test.py runs. The bad ones run only through tools/confine.py. Each is aimed at a decoy
+# that the test has laid itself in its own folder or under a name of its own in /dev/shm, at a process of its own, or sends signal 0, which checks but delivers nothing;
+# the exception is «as root, /proc's system places», which opens real files ({paths}: files of /proc, or /dev/ptmx) for writing and closes them without writing:
+# {run} the confined folder, {also} the folder given with --also, {name} a name that the test makes unique to this run: its sleeping child's in «a signal», the file's in «the rule for /dev/shm» and the decoy's in «as root, another account's file in /dev/shm», {paths} the files that «as root, /proc's system places» opens. (Two harm nothing and are also run bare, for comparison: «its own /proc», «what is ignored»; «the mount namespace» and «multiprocessing» harm nothing either.) A line: the check's name, a tab, the command between backquotes (for bash -c). The standing test of dangerous calls
+# reads them as a page's commands, and tests/dangerous_calls.tsv gives their reason.
+a removal	`rm -rf "{run}/../decoy"; echo "removal $?"`
+an overwriting	`echo x >> "{run}/../decoy/keep.txt"; echo "appending $?"; echo x > "{run}/../decoy/keep.txt"; echo "overwriting $?"`
+a renaming	`mv "{run}/../decoy/keep.txt" "{run}/../decoy/moved.txt"; echo "within $?"; mv "{run}/../decoy/keep.txt" "{run}/taken.txt"; echo "out $?"`
+an emptying	`python3 -c 'import os, sys; os.truncate(sys.argv[1], 0)' "{run}/../decoy/keep.txt"; echo "emptying $?"`
+a making	`mkdir "{run}/../decoy/folder"; echo "folder $?"; ln -s keep.txt "{run}/../decoy/link"; echo "link $?"; ln "{run}/../decoy/keep.txt" "{run}/../decoy/second"; echo "name $?"; mkfifo "{run}/../decoy/fifo"; echo "fifo $?"`
+an empty folder's removal	`rmdir "{run}/../decoy/empty"; echo "rmdir $?"`
+a home	`echo x > "$HOME/planted.txt"; echo "home $?"; echo x > "{run}/mine.txt"; echo "own $?"`
+a signal	`pkill -KILL -f {name}; echo "signal $?"`
+its own /proc	`echo plant > /proc/$$/comm; echo "proc $?"`
+what is ignored	`grep SigIgn /proc/self/status`
+the signals' filter	`set +m; setsid sleep 30 & p=$!; for i in $(seq 100); do [ "$(cut -d' ' -f5 /proc/$p/stat 2>/dev/null)" = "$p" ] && break; sleep 0.1; done; kill -0 -- -$p; echo "group $?"; kill -0 -1; echo "all $?"; kill -0 0; echo "own $?"; s=$(cat /proc/$p/stat 2>/dev/null); s=${s##*) }; set -- $s; if [ "$2 $3" = "$$ $p" ]; then kill $p; echo "child $?"; else echo "child gone"; fi; wait`
+the option --also	`echo x > "{also}/made.txt"; echo "also $?"; echo x > "{run}/../decoy/also.txt"; echo "decoy $?"`
+the rule for /dev/shm	`echo x > "/dev/shm/{name}"; echo "file $?"; rm -f "/dev/shm/{name}"; echo "removal $?"; mkdir "/dev/shm/{name}.d"; echo "folder $?"`
+a device node	`python3 -c "exec('import os, stat, sys\nfor p, dev, kind in ((sys.argv[1], 0, stat.S_IFCHR), (sys.argv[2], 0, stat.S_IFBLK), (sys.argv[3], os.makedev(1, 3), stat.S_IFCHR))[:3 if os.geteuid() == 0 else 2]:\n try:\n  os.mknod(p, 0o600 | kind, dev); print(0)\n except OSError as e:\n  print(e.errno)')" "{run}/zero-node" "{run}/block-node" "{run}/null-twin"`
+the mount namespace	`readlink /proc/self/ns/mnt`
+multiprocessing	`python3 -c 'import multiprocessing as m, time; c = m.get_context("spawn"); l = c.Lock(); l.acquire(); l.release(); q = c.Queue(); q.put("mp ok"); p = c.Process(target=time.sleep, args=(0,)); p.start(); p.join(); print(q.get(timeout=60) if p.exitcode == 0 else "child %s" % p.exitcode)'`
+as root, /proc's system places	`python3 -c "exec('import os, sys\nfor p in sys.argv[1:]:\n try:\n  os.close(os.open(p, os.O_WRONLY | os.O_CLOEXEC)); print(0)\n except OSError as e:\n  print(e.errno)')" {paths}`
+as root, another account's file in /dev/shm	`ls "/dev/shm/{name}" >/dev/null 2>&1; echo "ls $?"; echo x >> "/dev/shm/{name}"; echo "append $?"; rm -f "/dev/shm/{name}"; echo "rm $?"; echo x > "/dev/shm/{name}.mine"; echo "mine $?"`

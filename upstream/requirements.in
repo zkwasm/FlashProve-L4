@@ -1,0 +1,7 @@
+# The Python packages that this tree's Python tools and tests import directly (scales/README.md, weight_sums/README.md), each at a
+# version under which the tools have run. requirements.txt is made from this file.
+gguf==0.19.0
+torch==2.9.1
+numpy==2.3.5
+pyarrow==23.0.1
+tokenizers==0.22.2

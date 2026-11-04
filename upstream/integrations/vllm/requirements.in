@@ -1,0 +1,3 @@
+# The version of vLLM that this folder is tested with. integer_model/ and end_to_end/ are tied to it. The
+# middleware imports nothing from vLLM, but it has been tried with no other version. requirements.txt is generated from this file.
+vllm==0.29.0

@@ -1,0 +1,42 @@
+{
+  "id": "2cde2d3ad5214393c2adec56f3ee4ba4a97932f15ae92c2077101bc3fd937470",
+  "nextToken": 310,
+  "results": [
+    {
+      "name": "honest",
+      "exit": 0,
+      "last": "YES",
+      "seconds": 0.9634375
+    },
+    {
+      "name": "changed-input",
+      "exit": 1,
+      "last": "NO: proof-refused",
+      "seconds": 0.560309667
+    },
+    {
+      "name": "changed-output",
+      "exit": 1,
+      "last": "NO: reply-differs",
+      "seconds": 0.9355063330000003
+    },
+    {
+      "name": "changed-proof",
+      "exit": 1,
+      "last": "NO: proof-refused",
+      "seconds": 0.7801949170000002
+    },
+    {
+      "name": "changed-commitment-id",
+      "exit": 1,
+      "last": "NO: model-statement",
+      "seconds": 0.3762727920000002
+    },
+    {
+      "name": "changed-key",
+      "exit": 1,
+      "last": "NO: key-refused",
+      "seconds": 0.9515679169999999
+    }
+  ]
+}

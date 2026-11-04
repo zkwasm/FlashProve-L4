@@ -1,0 +1,17 @@
+p258 at most 1 requests share one opening, each with its own proof file
+p258 timing not hidden: nothing is done to hide the time of a release, so a batch's time shows; empty seats are not proved, so the number of requests in a batch shows;
+# GPU 0000:00:03.0 is on NUMA node 0; this thread is pinned to 8 of its CPUs
+p258 the parameter file meets the conditions for hiding that follow from it alone (their names and what each asks: blocks/frame/hiding_conditions.h) (these conditions count positions and masks; they say nothing of how a record's masks are made)
+setting: field degree 3; requests: fold width 128, 5 repetitions mod q; opening: fold width 168, 5 repetitions mod q; identities up to 2^28 keys; folds inside 2^17; version word 825374792; hb 128; a serving build
+# the parameter file allows lookup identities of up to 2^24 keys (line lidb)
+# the stream has five limbs (line xl)
+# the parameter files' digest: hp=d37db24502de235c0591d64ac1c55575b16085344e40e5c58e0c32bc373e0180
+# GPU memory: 0.187 GB are in use at the start of this run, including its own CUDA context
+start-up: arguments and parameter file read
+# the test on the weight table runs in this process, on 1 keeper (set up in 0.2 s)
+start-up: the weight table's keepers set up
+p258 closed: the program reads its secrets now. From here on it prints only the fixed lines listed in prover/docs/closed_front.md; prover/docs/ends-in-short.md explains the name in the last line
+p258 the parameter file and the sub-proofs' shapes meet the conditions for hiding
+p258 setting 3 128 5 168 5 128
+batch 0 leaf 0 n 1
+p258 end 0

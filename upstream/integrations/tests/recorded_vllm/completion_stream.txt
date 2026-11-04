@@ -1,0 +1,10 @@
+data: {"id":"dummy","object":"text_completion","created":0,"model":"dummy","choices":[{"index":0,"text":"","logprobs":null,"finish_reason":null,"stop_reason":null,"prompt_token_ids":[1,2,3,4,5],"token_ids":[11]}]}
+
+data: {"id":"dummy","object":"text_completion","created":0,"model":"dummy","choices":[{"index":0,"text":"","logprobs":null,"finish_reason":null,"stop_reason":null,"prompt_token_ids":null,"token_ids":[12]}]}
+
+data: {"id":"dummy","object":"text_completion","created":0,"model":"dummy","choices":[{"index":0,"text":"","logprobs":null,"finish_reason":null,"stop_reason":null,"prompt_token_ids":null,"token_ids":[13]}]}
+
+data: {"id":"dummy","object":"text_completion","created":0,"model":"dummy","choices":[{"index":0,"text":"","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_token_ids":null,"token_ids":[7]}],"system_fingerprint":"vllm-0.29.0-dummy"}
+
+data: [DONE]
+

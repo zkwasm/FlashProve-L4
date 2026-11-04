@@ -1,0 +1,13 @@
+run product, tiny edition: a test size that reaches no security level
+format H821
+target 10
+work-on-positions 6
+salt-bytes 40
+nonce-bytes 8
+position-bytes 0
+samples 1
+log-length 4
+log-n 7
+mask-log-n 7
+stage 1 1 8 8
+stage 0 0 9 9

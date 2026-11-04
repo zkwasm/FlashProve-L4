@@ -1,0 +1,14 @@
+p258 closed: the program reads its secrets now\. From here on it prints only the fixed lines listed in prover/docs/closed_front\.md; prover/docs/ends-in-short\.md explains the name in the last line
+p258 the parameter file and the sub-proofs' shapes meet the conditions for hiding
+p258 the parameter file and the sub-proofs' shapes miss a condition for hiding: .{0,300}
+p258 setting -?[0-9]+ -?[0-9]+ -?[0-9]+ -?[0-9]+ -?[0-9]+ -?[0-9]+
+batch [0-9]+ leaf [0-9]+ n -?[0-9]+
+p258 alarm memory-grew: the prover's own GPU memory has risen above its peak at the end of the first pass; the service goes on \(prover/docs/ends-in-short\.md\)
+p258 alarm cut-short: in/ holds more requests than one scan reads, so those that are served need not be the oldest; the service goes on \(prover/docs/ends-in-short\.md\)
+p258 alarm unreadable-request: in/ holds a file with a request's name and length that cp_prove may not read \(Permission denied\)\. It stays there without a response; once the account that runs cp_prove may read it, the next scan takes it like any other file there\. Printed once in a process: look into in/ \(ls -l\) for later ones; the service goes on \(prover/docs/ends-in-short\.md\)
+p258 -keep-for-the-audit: this batch's 32 random bytes are kept in the secret folder\. Until the audit has erased them, hiding is void for this batch and no service may start on this folder; hand out none of its responses unless the audit has said YES\. Run tools/audit/audit_batch\.sh\.
+p258 not every step of the wipe ran: GPU memory, host memory or staged response files may still hold secrets \(prover/docs/ends-in-short\.md\)
+p258 end 0
+p258 end 1
+p258 end 1 (asked-to-end|cp-copy-count|cp-copy-spent|cp-isk-seed-public|cp-leaf-record|cp-prove-kept-not-written|cp-weights-files|cuda-call|guard|hc-key-file|hc-key-test|hc-nodes-root|hc-own-node|no-first-chain|no-host-memory|not-all-wiped|policy-tables-absent|prover-only-hiding-conditions|source-short|source-zero|write-failed)
+p258 end 9 (own-test-base-mask|own-test-batch-keys|own-test-coin-library|own-test-coins-bound|own-test-engine-coins|own-test-engine-coins-unseen|own-test-engine-key|own-test-entries-written|own-test-fold|own-test-fold-mask|own-test-foreign-coins|own-test-index-mask|own-test-key|own-test-key-copy|own-test-lin-mask|own-test-mask-rows|own-test-masks|own-test-pad-kept|own-test-pad-place|own-test-pads|own-test-ranges-mask|own-test-salt|own-test-slot-pads|own-test-slot-pads-recount|own-test-zero-key)

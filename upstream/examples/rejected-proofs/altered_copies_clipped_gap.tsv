@@ -1,0 +1,14 @@
+# The altered sets that try_altered_copies.py makes from ../accepted-proof-clipped-gap. Columns and rows are those of
+# altered_copies.tsv, whose first lines explain the columns, but for the row on example.y: this request's range ends
+# before the window's end (e < T), so example.y must hold 0 (docs/format/FORMAT.md, section 12.2, test 4). If the
+# example is ever made anew with e = T, take that row from altered_copies.tsv again.
+one bit of the proof changed	example.proof	middle	flip	NO: proof-refused
+the proof's last byte cut off	example.proof	last	cut	NO: proof-refused
+one byte added to the proof	example.proof	end	append 00	NO: proof-refused
+one bit of ivk/key.bin changed	ivk/key.bin	middle	flip	NO: key-refused
+one bit of ivk/leaf/0.bin changed	ivk/leaf/0.bin	middle	flip	NO: entry-refused
+a prompt token changed	example.req	token 0	flip	NO: proof-refused
+a checked reply token changed	example.req	token first-checked	flip	NO: proof-refused
+example.y is 1 where it must be 0	example.y	token 0	flip	NO: statement-range
+another scale in KL.bin	config/KL.bin	middle	flip	NO: model-statement
+another commitment ID	ID.txt	last	other-digit	NO: model-statement
